@@ -65,8 +65,8 @@ Multiple parameter settings can be done by concatenation of individual expressio
 * Depending on the context, default values will be padded in lists that omit parameters in the front or back
 * Inside a block protected with `{ ... }`:
   + the string will not be split at `:` and `,` characters
-  + protection brackets are removed if being outermost like in `{abcd}}`, but not in `a{bcd}`
-  + the `{` and `}` must pair-wise match like e.g. in `{{ad} {bc{de}}}`
+  + protection brackets are removed if being outermost like in `{abcd}`, but not in `a{bcd}`
+  + the `{` and `}` must pair-wise match like e.g. in `{ {ad} {bc{de}} }`
 * _Examples:_
   * `print=1000 : !nmc : nosave`
   * `f = 0.8 : file = parms/ftf_pbp.dat`
