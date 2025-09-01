@@ -14,21 +14,21 @@
 
 # Table of Contents
 
-* [Introduction](README.md)
-* [Quick Start](README.md)
-* [General Concept](doc/GeneralConcept.md)
-* [Code](doc/Code.md)
+* [Introduction](../README.md)
+* [Quick Start](../README.md)
+* [General Concept](../doc/GeneralConcept.md)
+* [Code](../doc/Code.md)
    + [Code Structre](#code-structure)
    + [Classes](#classes)
    + [Steering Macros](#steering-macros)
    + [Tools](#tools)
    + [Parameter Files](#parameter-files)
-* [Getting Started](doc/GettingStarted.md)
-* [Configuration Setup](doc/ConfigurationSetup.md)
-* [Running on Virgo](doc/Virgo.md)
-* [Tools](doc/Tools.md)
-* [Demos](doc/Demos.md)
-* [Appendix](doc/Appendix.md)
+* [Getting Started](../doc/GettingStarted.md)
+* [Configuration Setup](../doc/ConfigurationSetup.md)
+* [Running on Virgo](../doc/Virgo.md)
+* [Tools](../doc/Tools.md)
+* [Demos](../doc/Demos.md)
+* [Appendix](../doc/Appendix.md)
 
 # Code
 
@@ -173,4 +173,4 @@ There are (for the time being) four parameter files bundled with the software:
 | ftf_pbp.dat              | Parametrization of anti-p p generic reactions from FTF event generator (5264 channels)  |
 | ftf_pp.dat               | Parametrization of pp generic reactions from FTF event generator (3031 channels)        |
 
-Proceed to the next section: [Getting Started](doc/GettingStarted.md)
+Proceed to the next section: [Getting Started](../doc/GettingStarted.md)
