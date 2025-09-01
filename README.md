@@ -29,6 +29,7 @@
 
 **HepFastSim** is (supposed to be) a simple-to-use, experiment-independent, stand-alone Fast Simulation Framework. Its purpose is the ability to setup a rough detector geometry in a short time (without too much details needed) and test it for various physics cases without the need for an external generator. The focus is on simplicity and speed rather than on accuracy. The general spirit is, that you do _not need_ to provide many details about the detector specification if you do not have them, but you _can_ specify more details if available to improve accuracy.
 
+An online version of the documentation is located at [https://klausgoetzen.github.io/hfsdoc/](https://klausgoetzen.github.io/hfsdoc/).
 # Quick Start
 
 Before we start going into details let us run an example simulation. After unpacking you need to source the file `. set_rootinc.sh` in the install directory. This tells ROOT to look for include/source files in the `src/` directory. There are some example configuration files located in the subfolder `cfg/`. The default minimalistic demo is the simulation and reconstruction of the signal decay channel `anti-p p -> J/psi pi+ pi-`. We can run it with (the `+` at the end of the macro name `HepFastSim.C+` compiles the macro when running for the first time, roughly doubling the speed) 
