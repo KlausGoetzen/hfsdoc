@@ -14,19 +14,19 @@
 
 # Table of Contents
 
-* [Introduction](README.md)
-* [Quick Start](README.md)
-* [General Concept](doc/GeneralConcept.md)
-* [Code](doc/Code.md)
-* [Getting Started](doc/GettingStarted.md)
-* [Configuration Setup](doc/ConfigurationSetup.md)
-* [Running on Virgo](doc/Virgo.md)
+* [Introduction](../README.md)
+* [Quick Start](../README.md)
+* [General Concept](../doc/GeneralConcept.md)
+* [Code](../doc/Code.md)
+* [Getting Started](../doc/GettingStarted.md)
+* [Configuration Setup](../doc/ConfigurationSetup.md)
+* [Running on Virgo](../doc/Virgo.md)
   + [Preparations](#preparations)
   + [Submitting Jobs](#submitting-jobs)
   + [Output Handling](#output-handling)
-* [Tools](doc/Tools.md)
-* [Demos](doc/Demos.md)
-* [Appendix](doc/Appendix.md)
+* [Tools](../doc/Tools.md)
+* [Demos](../doc/Demos.md)
+* [Appendix](../doc/Appendix.md)
 
 # Running on Virgo
 
