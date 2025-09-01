@@ -14,11 +14,11 @@
 
 # Table of Contents
 
-* [Introduction](README.md)
-* [Quick Start](README.md)
-* [General Concept](doc/GeneralConcept.md)
-* [Code](doc/Code.md)
-* [Getting Started](doc/GettingStarted.md)
+* [Introduction](../README.md)
+* [Quick Start](../README.md)
+* [General Concept](../doc/GeneralConcept.md)
+* [Code](../doc/Code.md)
+* [Getting Started](../doc/GettingStarted.md)
    + [Parameter Assignment Syntax](#parameter-assignment-syntax)
    + [Particle Naming Scheme](#particle-naming-scheme)
    + [Configuration File Keywords](#configuration-file-keywords)
@@ -27,11 +27,11 @@
      - [Generator Tree](#generator-tree)
      - [Reconstruction Trees](#reconstruction-tree)
      - [Histograms](#histograms)
-* [Configuration Setup](doc/ConfigurationSetup.md)
-* [Running on Virgo](doc/Virgo.md)
-* [Tools](doc/Tools.md)
-* [Demos](doc/Demos.md)
-* [Appendix](doc/Appendix.md)
+* [Configuration Setup](../doc/ConfigurationSetup.md)
+* [Running on Virgo](../doc/Virgo.md)
+* [Tools](../doc/Tools.md)
+* [Demos](../doc/Demos.md)
+* [Appendix](../doc/Appendix.md)
 
 # Getting Started
 
@@ -46,7 +46,7 @@ Since the all in the configuration is about setting and assigning parameters, le
 <parameter_name> = <parameter_value(s)>
 ```
 
-Multiple parameter settings can be done by concatenation of individual expressions with colon (`:`) inbetween. The parameter parsing is based on the class `HepParMap` declared inside `HepFastAux.C`. More details about this very useful parameter handler can be found at [Appendix / HepParMap](doc/Appendix.md#hepparmap)..
+Multiple parameter settings can be done by concatenation of individual expressions with colon (`:`) inbetween. The parameter parsing is based on the class `HepParMap` declared inside `HepFastAux.C`. More details about this very useful parameter handler can be found at [Appendix / HepParMap](../doc/Appendix.md#hepparmap)..
 
 ### Syntax rules
 
@@ -94,7 +94,7 @@ This is in particular relevant for single particles like composites to be stored
 ## Configuration File Keywords
 [Back to TOC](#table-of-contents)
 
-The details about the configuration are described in the chapter [Configuration Setup](doc/ConfigurationSetup.md). There are four main catagories that need to be configured, which are
+The details about the configuration are described in the chapter [Configuration Setup](../doc/ConfigurationSetup.md). There are four main catagories that need to be configured, which are
 
 * **Event generation** or input
 * **Detector** configuration for simulation
@@ -236,7 +236,7 @@ root [0] HFS(10000, "cfg/demo_jpsi.cfg")
 
 After the simulation finished, several objects are/can be stored:
 + A **tree** containing the information **from the generator(s)** (`nmc`),
-+ the **trees** generated during **reconstruction** by `REC` statements in the configuration (see [Configuration Setup](doc/ConfigurationSetup.md#rec---reconstructionanalysis) for details),
++ the **trees** generated during **reconstruction** by `REC` statements in the configuration (see [Configuration Setup](../doc/ConfigurationSetup.md#rec---reconstructionanalysis) for details),
 + the **live histograms**, 
 + and a image of the complete **histogram panel**. 
 
@@ -270,7 +270,7 @@ _Examples for TTree::Draw:_
 
 
 ### Reconstruction Trees
-In contrast to the MC tree, the reconstruction trees have an entry (row) per particle. The stored quantities depend on the configuration of the `REC` statement and the options in `OPT`, see details in [Configuration Setup](doc/ConfigurationSetup.md#rec---reconstructionanalysis) and the option `storeopt` in [the previous chapter](#running-the-simulation). There are many quantities available, which are all listed in [the Appendix](doc/Appendix.md#ttree-branch-names). Per default the reconstruction trees are all stored to the output file, which can be suppressed by the option `!savetree`.
+In contrast to the MC tree, the reconstruction trees have an entry (row) per particle. The stored quantities depend on the configuration of the `REC` statement and the options in `OPT`, see details in [Configuration Setup](../doc/ConfigurationSetup.md#rec---reconstructionanalysis) and the option `storeopt` in [the previous chapter](#running-the-simulation). There are many quantities available, which are all listed in [the Appendix](../doc/Appendix.md#ttree-branch-names). Per default the reconstruction trees are all stored to the output file, which can be suppressed by the option `!savetree`.
 
 
 ### Histograms
@@ -279,4 +279,4 @@ All live histogram being created during the simulation process can be stored as 
 In order to save the histogram panel as image to a file, the option `savefig=<fig name>` can be used, with `<fig name>` being the figures' file name, where the file name extension (`jpg`, `png`, `pdf`, `C` for ROOT macro, `root` for ROOT file, etc) controls the output format.
 
 
-Proceed to the next section: [Configuration Setup](doc/ConfigurationSetup.md)
+Proceed to the next section: [Configuration Setup](../doc/ConfigurationSetup.md)
