@@ -20,9 +20,9 @@
 * [Code](doc/Code.md)
 * [Getting Started](doc/GettingStarted.md)
 * [Configuration Setup](doc/ConfigurationSetup.md)
+* [Running on Virgo](doc/Virgo.md)
 * [Tools](doc/Tools.md)
 * [Demos](doc/Demos.md)
-* [Running on Virgo](doc/Virgo.md)
 * [Appendix](doc/Appendix.md)
 
 # Introduction
