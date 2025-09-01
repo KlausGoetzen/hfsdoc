@@ -14,20 +14,20 @@
 
 # Table of Contents
 
-* [Introduction](README.md)
-* [Quick Start](README.md)
-* [General Concept](doc/GeneralConcept.md)
-* [Code](doc/Code.md)
-* [Getting Started](doc/GettingStarted.md)
-* [Configuration Setup](doc/ConfigurationSetup.md)
-* [Running on Virgo](doc/Virgo.md)
-* [Tools](doc/Tools.md)
+* [Introduction](../README.md)
+* [Quick Start](../README.md)
+* [General Concept](../doc/GeneralConcept.md)
+* [Code](../doc/Code.md)
+* [Getting Started](../doc/GettingStarted.md)
+* [Configuration Setup](../doc/ConfigurationSetup.md)
+* [Running on Virgo](../doc/Virgo.md)
+* [Tools](../doc/Tools.md)
    + [Background Analysis](#background-analysis---hepfastbganalysisc)
    + [PID Function Cache](#pid-function-cache---heppidhistgenc)
    + [PID PDF Generator](#pid-pdf-generator---heppidpdfgenc)
    + [Histogram Drawing](#histogram-drawing---hepdrawhistosc)
-* [Demos](doc/Demos.md)
-* [Appendix](doc/Appendix.md)
+* [Demos](../doc/Demos.md)
+* [Appendix](../doc/Appendix.md)
 
 # Tools
 
@@ -73,7 +73,7 @@ We e.g. see that the channel `anti-p- pi+ n0` is the most dominant background ch
 ## PID Function Cache - HepPidHistGen.C
 [Back to TOC](#table-of-contents)
 
-The macro `HepPidHistGen.C` offers the functionallity to generate a PID histogram map (see parameter `pidmap` in `PID` [detector setup](doc/ConfigurationSetup.md#pid-particle-identification-detectors) from input functions in ROOT's `TFormula` format. These functions should depend on mass `m` and momentum `p` and might depend on angles theta (`tht`) and `phi`. The code will generate a set of `TH3F`, one for each particle type (e, mu, pi, K, p), with the axis x=p, y=theta, and z=phi, with the bin contents and bin-errors being the expectation values and resolutions, respectively, of the PID quantity for the corresponding phase-space location (p, theta, phi). The macro `HepFastBgAnalysis.C(<opt>)` expects one parameter string `opt` with the parameters
+The macro `HepPidHistGen.C` offers the functionallity to generate a PID histogram map (see parameter `pidmap` in `PID` [detector setup](../doc/ConfigurationSetup.md#pid-particle-identification-detectors) from input functions in ROOT's `TFormula` format. These functions should depend on mass `m` and momentum `p` and might depend on angles theta (`tht`) and `phi`. The code will generate a set of `TH3F`, one for each particle type (e, mu, pi, K, p), with the axis x=p, y=theta, and z=phi, with the bin contents and bin-errors being the expectation values and resolutions, respectively, of the PID quantity for the corresponding phase-space location (p, theta, phi). The macro `HepFastBgAnalysis.C(<opt>)` expects one parameter string `opt` with the parameters
 
 * `fexp`: (m, p, theta, phi)-dependent formula for expectation value
 * `fres`: (m, p, theta, phi)-dependent formula for resolution of expectation value
@@ -102,12 +102,12 @@ which generates the histograms `tof_e`, `tof_mu`, `tof_pi`, `tof_K`, and `tof_p`
 PID ;; name=tof_barrel : pidmap=histpid.root, tofb 
 ```
 
-like pointed out in [this section](doc/ConfigurationSetup.md#pid-particle-identification-detectors).
+like pointed out in [this section](../doc/ConfigurationSetup.md#pid-particle-identification-detectors).
 
 ## PID Pdf Generator - HepPidPdfGen.C
 [Back to TOC](#table-of-contents)
 
-In case the probability density (PDF) for a certain PID quantity is not Gaussian distributed (see figure in the [PID section](doc/ConfigurationSetup.md#pid-particle-identification-detectors) for examples), there is the possibility to provide the PDF in form of a `TH3F` histogram, where the (x,y) bin corresponds to the phase-space location (p, theta), and the distribution along the z-coordinate represents the normalized PDF for the quantity. The macro `HepPidPdfGen.C` helps to generate these kind of histograms based on an input `TTree` inside a ROOT file. 
+In case the probability density (PDF) for a certain PID quantity is not Gaussian distributed (see figure in the [PID section](../doc/ConfigurationSetup.md#pid-particle-identification-detectors) for examples), there is the possibility to provide the PDF in form of a `TH3F` histogram, where the (x,y) bin corresponds to the phase-space location (p, theta), and the distribution along the z-coordinate represents the normalized PDF for the quantity. The macro `HepPidPdfGen.C` helps to generate these kind of histograms based on an input `TTree` inside a ROOT file. 
 
 In addition it offers an interactive display of histograms already generated (just now or read from the input ROOT file) to inspect the PDF for the various particle types. The macro `HepPidPdfGen.C(<opt>)` expects one parameter string `opt` with the `:` separated parameters
 
@@ -144,14 +144,14 @@ The generated histogram maps can be used in the simulation configuration with
 PID ;; name=muon_det : pidpdf=hpidpdf.root, muoiron 
 ```
 
-like pointed out in [this section](doc/ConfigurationSetup.md#pid-particle-identification-detectors).
+like pointed out in [this section](../doc/ConfigurationSetup.md#pid-particle-identification-detectors).
 
 ## Histogram Drawing - HepDrawHistos.C
 [Back to TOC](#table-of-contents)
 
 The macro `HepDrawHistos.C` offers an easy way to plot a bunch of histograms from a ROOT `TTree`. In particular it simply re-draws live histograms from a simulation job based on the output file and the configuration file containing the `HIST` statements. The macro expects up to four input parameters `HepDrawHistos.C(cfg, file, width, stat)`
 
-* `cfg`: name of the config file with the histogram definitions; see [HIST section](doc/ConfigurationSetup.md#hist---live-histograms) for details
+* `cfg`: name of the config file with the histogram definitions; see [HIST section](../doc/ConfigurationSetup.md#hist---live-histograms) for details
 * `file`: input ROOT file name containing the `TTrees` to plot the histograms (auto-generated from cfg-file if not specified)
 * `width`: width of pads; default: 450
 * `stat`: configuration code for statistic box; default: 10
@@ -162,4 +162,4 @@ For example, if we would like to re-draw the plots from the simulation correspon
 root -l 'HepDrawHistos.C("cfg/demo_mini.cfg")'  // -> auto-generates file name "ana_demo_mini.root"
 ```
 
-displaying the canvas with the two plots as shown in the [introduction](README.md).
+displaying the canvas with the two plots as shown in the [introduction](../README.md).
