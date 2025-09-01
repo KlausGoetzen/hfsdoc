@@ -16,17 +16,17 @@
 
 * [Introduction](../README.md)
 * [Quick Start](../README.md)
-* [General Concept](../doc/GeneralConcept.md)
-* [Code](../doc/Code.md)
-* [Getting Started](../doc/GettingStarted.md)
-* [Configuration Setup](../doc/ConfigurationSetup.md)
-* [Running on Virgo](../doc/Virgo.md)
+* [General Concept](GeneralConcept.md)
+* [Code](Code.md)
+* [Getting Started](GettingStarted.md)
+* [Configuration Setup](ConfigurationSetup.md)
+* [Running on Virgo](Virgo.md)
   + [Preparations](#preparations)
   + [Submitting Jobs](#submitting-jobs)
   + [Output Handling](#output-handling)
-* [Tools](../doc/Tools.md)
-* [Demos](../doc/Demos.md)
-* [Appendix](../doc/Appendix.md)
+* [Tools](Tools.md)
+* [Demos](Demos.md)
+* [Appendix](Appendix.md)
 
 # Running on Virgo
 
@@ -71,7 +71,7 @@ The setting **main** of the last command selects the slurm partition for job sub
 ## Submitting Jobs
 [Back to TOC](#table-of-contents)
 
-In order to sumit `HepFastSim` simulation jobs, use the submission script [`subhfs.sh`](subhfs.sh):
+In order to sumit `HepFastSim` simulation jobs, use the submission script **`subhfs.sh`**:
 ```
 > ./subhfs.sh
 
@@ -86,7 +86,7 @@ USAGE: ./subhfs.sh <cfg> <arr> <nev> <opt>
 
 ./subhfs.sh demo 100-109 20000 'savehist'
 ```
-The submission scripts takes care about **proper random number handling** by adding a `rndseed=RUNID` to the running options, so that each jobs runs on a well defined random number, that is identical to the array number `RUNID` of the job.
+The submission scripts uses the script **`job_rootmacro.sh`** to submit single jobs to the virgo cluster. It takes care about **proper random number handling** by adding a `rndseed=RUNID` to the running options, so that each jobs runs on a well defined random number, that is identical to the array number `RUNID` of the job.
 
 As a test you can submit a couple of jobs to the `debug` partition by
 ```

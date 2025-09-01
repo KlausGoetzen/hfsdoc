@@ -16,10 +16,10 @@
 
 * [Introduction](../README.md)
 * [Quick Start](../README.md)
-* [General Concept](../doc/GeneralConcept.md)
-* [Code](../doc/Code.md)
-* [Getting Started](../doc/GettingStarted.md)
-* [Configuration Setup](../doc/ConfigurationSetup.md)
+* [General Concept](GeneralConcept.md)
+* [Code](Code.md)
+* [Getting Started](GettingStarted.md)
+* [Configuration Setup](ConfigurationSetup.md)
    + [INC - Include Another Config File](#inc---include-another-config-file)
    + [OPT - General Options](#opt---general-options)
    + [ADD - Particle Database Manipulation](#add---particle-database-manipulation)
@@ -37,10 +37,10 @@
    + [PID - Particle Identification Detectors](#pid---particle-identification-detectors)
    + [REC - REC - Reconstruction/Analysis](#rec---reconstructionanalysis)
    + [HIST - Live Histograms](#hist---live-histograms)
-* [Running on Virgo](../doc/Virgo.md)
-* [Tools](../doc/Tools.md)
-* [Demos](../doc/Demos.md)
-* [Appendix](../doc/Appendix.md)
+* [Running on Virgo](Virgo.md)
+* [Tools](Tools.md)
+* [Demos](Demos.md)
+* [Appendix](Appendix.md)
 
 # Configuration Setup
 
@@ -58,30 +58,31 @@ If the included file `<file name>` itself contains an `INC` statement, the inclu
 
 General options globally steer the behaviour of HepFastSim. Some options have impact on the simulation itself, others are related to storage options or histogramming.
 
-| Parameter   | Meaning                                                                                                                                                               | Default                            |
-| ----------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
-| `verbose`   | verbosity level (the higher the more is printed)                                                                                                                      | `0`                                |
-| `gen`       | name of generator config file                                                                                                                                         | global options file                |
-| `det`       | name of detector config file                                                                                                                                          | global options file                |
-| `ana`       | name of analysis config file                                                                                                                                          | global options file                |
-| `storeopt`  | store options for composites and event shape; veto with !\<option>. Available options: `all, cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape`) | `all` (store everything)           |
-| `pidmode`   | global PID mode: chi2 or lh                                                                                                                                           | `chi2`                             |
-| `mode`      | arbitrary mode number stored in all TTrees                                                                                                                            | `0`                                |
-| `tag`       | arbirtary tag (string) appended to output file                                                                                                                        | _empty_                            |
-| `print`     | cycle (number of events) to update live histos / print event number                                                                                                   | `1000`                             |
-| `errlvl`    | ROOT error level output suppression (number from 0 to 4)                                                                                                              | `0` _(no suppression)_             |
-| `mcphot`    | number of additional low energetic photons to allow for successful MC truth match                                                                                     | `5`                                |
-| `mcethresh` | energy threshold for low energetic photons                                                                                                                            | `0.03` \[GeV]                      |
-| `bzfield`   | field strength of optional solenoid field in z-direction around IP                                                                                                    | `0.0` \[T]                         |
-| `prop2ip`   | _flag:_ propagate (secondary) tracks to z=0                                                                                                                           | `0` _(false)_                      |
-| `rndseed`   | random seed (for reproducibility)                                                                                                                                     | `0` (= not fixed)                  |
-| `hconf`     | canvas configuration for live historgrams as _padwidth, columns_                                                                                                      | `400,4`                            |
-| `nmc`       | _flag:_ generate MC truth TTree                                                                                                                                       | `0` _(false)_                      |
-| `savenmc`   | _flag:_ save MC truth TTree to output file                                                                                                                            | `0` _(false)_                      |
-| `savetree`  | _flag:_ save all analysis TTrees to output file                                                                                                                       | `1` _(true)_                       |
-| `savehist`  | _flag:_ save histograms to output file                                                                                                                                | `0` _(false)_                      |
-| `savefig`   | name under which to save live histogram canvas                                                                                                                        | _none_ (= do not save canvas)      |
-| `file`      | name of output file                                                                                                                                                   | ana\__config-filename_\__tag_.root |
+| Parameter   | Meaning                                                                                            | Default                       |
+| ----------- | ---------------------------------------------------------------------------------------------------| ----------------------------- |
+| `verbose`   | verbosity level (the higher the more is printed)                                                   | `0`                           |
+| `gen`       | name of generator config file                                                                      | global options file           |
+| `det`       | name of detector config file                                                                       | global options file           |
+| `ana`       | name of analysis config file                                                                       | global options file           |
+| `storeopt`  | store options for composites and event shape; veto by prepending `!` to option. Available options: |                               |
+|             | `all, cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape`                      | `all` (store everything)      |
+| `pidmode`   | global PID mode: chi2 or lh                                                                        | `chi2`                        |
+| `mode`      | arbitrary mode number stored in all TTrees                                                         | `0`                           |
+| `tag`       | arbirtary tag (string) appended to output file                                                     | _empty_                       |
+| `print`     | cycle (number of events) to update live histos / print event number                                | `1000`                        |
+| `errlvl`    | ROOT error level output suppression (number from 0 to 4)                                           | `0` _(no suppression)_        |
+| `mcphot`    | number of additional low energetic photons to allow for successful MC truth match                  | `5`                           |
+| `mcethresh` | energy threshold for low energetic photons                                                         | `0.03` \[GeV]                 |
+| `bzfield`   | field strength of optional solenoid field in z-direction around IP                                 | `0.0` \[T]                    |
+| `prop2ip`   | _flag:_ propagate (secondary) tracks to z=0                                                        | `0` _(false)_                 |
+| `rndseed`   | random seed (for reproducibility)                                                                  | `0` (= not fixed)             |
+| `hconf`     | canvas configuration for live historgrams as _padwidth, columns_                                   | `400,4`                       |
+| `nmc`       | _flag:_ generate MC truth TTree                                                                    | `0` _(false)_                 |
+| `savenmc`   | _flag:_ save MC truth TTree to output file                                                         | `0` _(false)_                 |
+| `savetree`  | _flag:_ save all analysis TTrees to output file                                                    | `1` _(true)_                  |
+| `savehist`  | _flag:_ save histograms to output file                                                             | `0` _(false)_                 |
+| `savefig`   | name under which to save live histogram canvas                                                     | _none_ (= do not save canvas) |
+| `file`      | name of output file                                                                                | `ana_<cfg>_<tag>.root`        |
 
 ## ADD - Particle Database Manipulation
 [Back to TOC](#table-of-contents)
@@ -396,7 +397,7 @@ TRK ;; name = trk4 : dist=-100 : tht=140,170        # backward disc
 TRK ;; name = trk5 : dist=65   : tht=60,120         # barrel part
 ```
 
-![Acceptance](../doc/acc.png)
+![Acceptance](acc.png)
 
 ### Detection Efficiency
 [Back to TOC](#table-of-contents)
@@ -519,7 +520,7 @@ _Example:_
     PID ;; name=pid4 : pidpdf=hpidpdf.root, hpidpdf 
     ```
 
-![PID Pdf](../doc/pidpdf.png)
+![PID Pdf](pidpdf.png)
 
 ### PID Templates
 Since the analytical expressions of the particle dependent expectation values are well known for many PID systems (like Cherenkov angle from RICHs or dE/dx from tracking detectors), some are already prepared as templates and can be directly used. There are also some empirical models for E/p measurements form calorimeters and the penetration depth in RPC detectors (both to be used with a grain of salt.) The template definitions are in the file `cfg/pid_templates.cfg` and can be extendend by the user. Adding a template works exactly like definitions of the functions `pidexp`, `pidres`, `pidthr`, and all needed parameters, together with setting the parameter `template = <template name>`. The name `<template name>` can then be used in the detector configuration as keyword (=flag) to use this template. Any template parameters set in the configuration will simply override the corresponding default settings in the template.
@@ -544,7 +545,7 @@ PID  ;;  name = emc  : eoverp : tht=  5,160 : eff=0.98                         #
 PID  ;;  name = tofb : tofb   : tht= 22,140 : eff=0.98 : dist=50  : dt=0.14    # ToF template (barrel)
 PID  ;;  name = tofw : tofw   : tht= 10, 20 : eff=0.98 : dist=150 : dt=0.14    # ToF template (fwd wall)
 ```
-![PID Example](../doc/pidexample.png)
+![PID Example](pidexample.png)
 
 
 ### Overall PID
@@ -697,4 +698,4 @@ HIST ;;  cut=abs(xtrpdg)==2212 : leg = proton
 ```
 Only the first histogram has a lengthy definition, while for the other particle types just the new cut and legend entry is set. 
 
-Proceed to the next section: [Tools](../doc/Tools.md)
+Proceed to the next section: [Tools](Tools.md)

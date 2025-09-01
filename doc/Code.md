@@ -16,19 +16,19 @@
 
 * [Introduction](../README.md)
 * [Quick Start](../README.md)
-* [General Concept](../doc/GeneralConcept.md)
-* [Code](../doc/Code.md)
+* [General Concept](GeneralConcept.md)
+* [Code](Code.md)
    + [Code Structre](#code-structure)
    + [Classes](#classes)
    + [Steering Macros](#steering-macros)
    + [Tools](#tools)
    + [Parameter Files](#parameter-files)
-* [Getting Started](../doc/GettingStarted.md)
-* [Configuration Setup](../doc/ConfigurationSetup.md)
-* [Running on Virgo](../doc/Virgo.md)
-* [Tools](../doc/Tools.md)
-* [Demos](../doc/Demos.md)
-* [Appendix](../doc/Appendix.md)
+* [Getting Started](GettingStarted.md)
+* [Configuration Setup](ConfigurationSetup.md)
+* [Running on Virgo](Virgo.md)
+* [Tools](Tools.md)
+* [Demos](Demos.md)
+* [Appendix](Appendix.md)
 
 # Code
 
@@ -39,37 +39,64 @@ The code and parameter data are arranged in the following directory structure. T
 
 ```
 ├── cfg
-│   ├── demo_3phi.cfg
-│   ├── demo_acc.cfg
-│   ├── demo_dispvtx.cfg
-│   ├── demo_fitmass.cfg
-│   ├── demo_gen.cfg
-│   ├── demo_gluex.cfg
-│   ├── demo_jpsi.cfg
-│   ├── demo_mini.cfg
-│   ├── demo_pid.cfg
-│   ├── demo_ppcharm.cfg
-│   ├── det_besiii.cfg
-│   ├── det_panda.cfg
-│   ├── det_panda_eff.cfg
-│   ├── det_pcbm.cfg
-│   ├── hpid_panda.cfg
-│   └── pid_templates.cfg
+│   ├── demo_3phi.cfg
+│   ├── demo_acc.cfg
+│   ├── demo_dispvtx.cfg
+│   ├── demo_fitmass.cfg
+│   ├── demo_gen.cfg
+│   ├── demo_gluex.cfg
+│   ├── demo_jpsi.cfg
+│   ├── demo_mini.cfg
+│   ├── demo_pid.cfg
+│   ├── demo_ppcharm.cfg
+│   ├── det_besiii.cfg
+│   ├── det_panda.cfg
+│   ├── det_panda_eff.cfg
+│   ├── det_pcbm.cfg
+│   ├── hpid_panda.cfg
+│   └── pid_templates.cfg
 ├── doc
 │   ├── acc.png
 │   ├── Appendix.md
 │   ├── Code.md
 │   ├── ConfigurationSetup.md
+│   ├── demo_acc.png
+│   ├── demo_gen.png
+│   ├── demo.png
 │   ├── Demos.md
 │   ├── GeneralConcept.md
 │   ├── GettingStarted.md
-│   ├── Tools.md
-│   ├── acc.png
-│   ├── demo.png
-│   ├── demo_acc.png
-│   ├── demo_gen.png
 │   ├── pidexample.png
-│   └── pidpdf.png
+│   ├── pidpdf.png
+│   ├── Tools.md
+│   └── Virgo.md
+├── parms
+│   ├── dpm.dat
+│   ├── ftf_pbp.dat
+│   ├── ftf_pp.dat
+│   └── HepFastParticleTable.txt
+├── src
+│   ├── HepFactory.C
+│   ├── HepFastAux.C
+│   ├── HepFastBoxGen.C
+│   ├── HepFastCand.C
+│   ├── HepFastCandList.C
+│   ├── HepFastDetBase.C
+│   ├── HepFastDetector.C
+│   ├── HepFastEventGen.C
+│   ├── HepFastEventShape.C
+│   ├── HepFastEvtReader.C
+│   ├── HepFastFit4C.C
+│   ├── HepFastGenBase.C
+│   ├── HepFastNtp.C
+│   ├── HepFastPartReader.C
+│   ├── HepFastPhspGen.C
+│   ├── HepFastPidDetector.C
+│   ├── HepFastQATool.C
+│   ├── HepFastSimpleCombiner.C
+│   ├── HepFastSimulation.C
+│   ├── HepFastVtxPoca.C
+│   └── HepSmartH.C
 ├── HepDrawHistos.C
 ├── HepFastBgAnalysis.C
 ├── HepFastSim.C
@@ -77,36 +104,12 @@ The code and parameter data are arranged in the following directory structure. T
 ├── HepFastSimDemoMini.C
 ├── HepPidHistGen.C
 ├── HepPidPdfGen.C
-├── parms
-│   ├── dpm.dat
-│   ├── ftf_pbp.dat
-│   ├── ftf_pp.dat
-│   └── HepFastParticleTable.txt
+├── hfslog.sh
+├── job_rootmacro.sh
 ├── README.md
 ├── set_rootinc.sh
-└── src
-    ├── HepFactory.C
-    ├── HepFastAux.C
-    ├── HepFastBoxGen.C
-    ├── HepFastCand.C
-    ├── HepFastCandList.C
-    ├── HepFastDetBase.C
-    ├── HepFastDetector.C
-    ├── HepFastEventGen.C
-    ├── HepFastEventShape.C
-    ├── HepFastEvtReader.C
-    ├── HepFastFit4C.C
-    ├── HepFastGenBase.C
-    ├── HepFastPartReader.C
-    ├── HepFastPhspGen.C
-    ├── HepFastPidDetector.C
-    ├── HepFastQATool.C
-    ├── HepFastSimpleCombiner.C
-    ├── HepFastSimulation.C
-    ├── HepFastVtxPoca.C
-    ├── HepSmartH.C
-    └── HepFastNtp.C
-
+├── set_virgo.sh
+└── subhfs.sh
 ```
 
 ## Classes
@@ -154,12 +157,16 @@ In order to run the simulation, three steering macros are provided.
 
 There are also some additional tools bundled with the package:
 
-| Macro               | Function                                  |
-| ------------------- | ----------------------------------------- |
-| HepDrawHistos.C     | Tool for simple histogram generation      |
-| HepFastBgAnalysis.C | Tool for background analysis              |
-| HepPidHistGen.C     | PID histogram generator from PID function |
-| HepPidPdfGen.C      | PID pdf histogram generator from TTree    |
+| Macro               | Function                                   |
+| ------------------- | ------------------------------------------ |
+| HepDrawHistos.C     | Tool for simple histogram generation       |
+| HepFastBgAnalysis.C | Tool for background analysis               |
+| HepPidHistGen.C     | PID histogram generator from PID function  |
+| HepPidPdfGen.C      | PID pdf histogram generator from TTree     |
+| hfslog.sh           | Analyse log files from virgo cluster jobs  |
+| job_rootmacro.sh    | Submit single ROOT macro to virgo cluster  |
+| set_virgo.sh        | Set environment for cluster job submission |
+| subhfs.sh           | Submit jobs to virgo cluster               |
 
 ## Parameter Files
 [Back to TOC](#table-of-contents)
@@ -173,4 +180,4 @@ There are (for the time being) four parameter files bundled with the software:
 | ftf_pbp.dat              | Parametrization of anti-p p generic reactions from FTF event generator (5264 channels)  |
 | ftf_pp.dat               | Parametrization of pp generic reactions from FTF event generator (3031 channels)        |
 
-Proceed to the next section: [Getting Started](../doc/GettingStarted.md)
+Proceed to the next section: [Getting Started](doc/GettingStarted.md)

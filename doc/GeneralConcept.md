@@ -16,16 +16,16 @@
 
 * [Introduction](../README.md)
 * [Quick Start](../README.md)
-* [General Concept](../doc/GeneralConcept.md)
+* [General Concept](GeneralConcept.md)
    + [Features](#features)
    + [Limitations](#limitations)
-* [Code](../doc/Code.md)
-* [Getting Started](../doc/GettingStarted.md)
-* [Configuration Setup](../doc/ConfigurationSetup.md)
-* [Running on Virgo](../doc/Virgo.md)
-* [Tools](../doc/Tools.md)
-* [Demos](../doc/Demos.md)
-* [Appendix](../doc/Appendix.md)
+* [Code](Code.md)
+* [Getting Started](GettingStarted.md)
+* [Configuration Setup](ConfigurationSetup.md)
+* [Running on Virgo](Virgo.md)
+* [Tools](Tools.md)
+* [Demos](Demos.md)
+* [Appendix](Appendix.md)
 
 # General Concept
 [Back to TOC](#table-of-contents)
@@ -86,4 +86,4 @@ Since we explicitly deal with a _Fast Simulation_ there is certainly a loss of a
 * **Beams are strictly along the z-axis**, i.e. it is (currently) not possible to define a tilt angle.
 * There is **no smearing of the position of the interaction point**. The IP is exactly located at (x,y,z) = (0,0,0).
 
-Proceed to the next section: [Code](../doc/Code.md)
+Proceed to the next section: [Code](Code.md)
