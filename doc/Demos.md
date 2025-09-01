@@ -14,18 +14,18 @@
 
 # Table of Contents
 
-* [Introduction](README.md)
-* [Quick Start](README.md)
-* [General Concept](doc/GeneralConcept.md)
-* [Code](doc/Code.md)
-* [Getting Started](doc/GettingStarted.md)
-* [Configuration Setup](doc/ConfigurationSetup.md)
-* [Running on Virgo](doc/Virgo.md)
-* [Tools](doc/Tools.md)
-* [Demos](doc/Demos.md)
+* [Introduction](../README.md)
+* [Quick Start](../README.md)
+* [General Concept](../doc/GeneralConcept.md)
+* [Code](../doc/Code.md)
+* [Getting Started](../doc/GettingStarted.md)
+* [Configuration Setup](../doc/ConfigurationSetup.md)
+* [Running on Virgo](../doc/Virgo.md)
+* [Tools](../doc/Tools.md)
+* [Demos](../doc/Demos.md)
    + [Generator Only](#generator-only)
    + [Geometric Acceptance](#geometric-acceptance)
-* [Appendix](doc/Appendix.md)
+* [Appendix](../doc/Appendix.md)
 
 # Demos
 
@@ -63,7 +63,7 @@ _Explanation:_
    + the **generated mass of omega(782)** from decays pbar p -> omega (-> pi+ pi-) pi+ pi-
    + the **omega pi+ pi- Dalitz plot** (the expressions for the square masses need to be computed from the 4-vectors)
 
-![(Generator only demo plot)](doc/demo_gen.png)
+![(Generator only demo plot)](../doc/demo_gen.png)
 
 ## Geometric Acceptance
 [Back to TOC](#table-of-contents)
@@ -102,4 +102,4 @@ _Explanation:_
    + Hit map of **backward disc** by computing track positions at z = -100cm from theta, phi
    + Hit map **theta vs phi** for all detectors
 
-![(Acceptance demo plot)](doc/demo_acc.png)
+![(Acceptance demo plot)](../doc/demo_acc.png)
