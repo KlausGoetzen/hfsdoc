@@ -602,12 +602,12 @@ REC ;; dec = J/psi -> mu+ mu- ; pbarpSystem -> J/psi pi+ pi- : ...   # reconstru
 It should be emphasized, that any kind of selection does not modify the original lists but is only applied just before combinatorics or storage. I.e. in the above example, the lists of mu+ and mu- still contain also candidates with `pidmu` \< 0.1, and the list of J/psi still those candidates outside the selected mass window. 
 
 ### Adding Lists
-When creating list by combinatorics, it is possible to append to previously generated lists, which can be achieved by the keyword `add` in the `dec` statement. This can be useful, as shown in the following example:
+When creating list by combinatorics, it is possible to append a list to a previously generated list, which can be achieved by the keyword `add` in the `dec` statement. This can be useful, as shown in the following example:
 ```
 REC  ;;  dec= phi -> K+ K-       :  pidk(K+)=0.01 # reco phi -> K+ K- with PID on K+ only
 REC  ;;  dec= phi -> K+ K- add   :  pidk(K-)=0.01 # reco phi -> K+ K- with PID on K- only, added to previous list
 ```
-Here, the `phi -> K+ K-` is reconstructed with PID selection either on the `K+` or on the `K-`. **Caution**: List with different (number of) final states should **not** be added, because this will screw the output tree. 
+Here, the `phi -> K+ K-` is reconstructed with PID selection either on the `K+` or on the `K-`. **Caution**: Lists with different (number of) final states should **not** be added, because this will screw the output tree. 
 
 
 ### Storage
