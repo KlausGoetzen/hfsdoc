@@ -565,7 +565,7 @@ REC ;; dec = <decay chain> : <variable>(<particle>) = <range> : store(<particle>
 ```
 and consists of the three parts:
 
-### Combinatorics (`dec`)
+### Combinatorics
 Reconstruction of composite particles is defined via the keyword `dec`. The composites to be reconstructed are specified in `<decay chain>`, where `<decay chain>` is a semicolon separated list of decays of the form `<mother> -> <daughters list>`. This is identical to the syntax for `phsp` with the difference, that here the decay chain has to be declared bottom up, i.e. the reconstruction of non-final-state particle used for combinatorics must be defined before usage. The decay chain can consist of only one decay specification, or of multiple. If the used wants to store only information about the event or non-composite particles (= final states), a `dec` statement is not necessary.
 
 _Example:_
@@ -601,7 +601,16 @@ REC ;; dec = J/psi -> mu+ mu- ; pbarpSystem -> J/psi pi+ pi- : ...   # reconstru
 ```
 It should be emphasized, that any kind of selection does not modify the original lists but is only applied just before combinatorics or storage. I.e. in the above example, the lists of mu+ and mu- still contain also candidates with `pidmu` \< 0.1, and the list of J/psi still those candidates outside the selected mass window. 
 
-### Storage (`store`)
+### Adding Lists
+When creating list by combinatorics, it is possible to append to previously generated lists, which can be achieved by the keyword `add` in the `dec` statement. This can be useful, as shown in the following example:
+```
+REC  ;;  dec= phi -> K+ K-       :  pidk(K+)=0.01 # reco phi -> K+ K- with PID on K+ only
+REC  ;;  dec= phi -> K+ K- add   :  pidk(K-)=0.01 # reco phi -> K+ K- with PID on K- only, added to previous list
+```
+Here, the `phi -> K+ K-` is reconstructed with PID selection either on the `K+` or on the `K-`. **Caution**: List with different (number of) final states should **not** be added, because this will screw the output tree. 
+
+
+### Storage
 The `store` statement configures what part of the information is stored to the `TTree` in the output file. It has to parameters, the particle (or list) name `<particle>`, and a tree name `<tree>`. The assigned value is a list of storage options. The relationship of these 'local' storage options and the stored branches is documented in **Appendix / TTree Branch Names**. Although perhaps unexpectedly, **kinematic and mass costraint fitting** is enabled via the `store` statement as well. This allows to choose fitting for each analysis TTree individually.
 
 | `<option>`        | Meaning                                                      |

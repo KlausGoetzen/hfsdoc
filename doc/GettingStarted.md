@@ -192,7 +192,10 @@ USAGE: HepFastSim(int nev, TString cfg, TString opt="")
    - bzfield   = Bz-field in [T]: 0.0 = do not run poca finder (default: 0)
    - prop2ip   = propagate secondaries close to IP (default: 0)
    - hconf     = padwidth,col of histogram canvas (default: 400,4)
-   - legtxt    = text size of legend (default: 0.04)
+   - hopt      = 2D histogram draw option preset
+   - legtxt    = text size of legend preset (default: 0.04)
+   - legwid    = width of legend preset (default: 0.25)
+   - legmarg   = margin of legend preset (default: 0.3)
    - noleg     = do not draw legend on histograms
    - nostat    = do not draw statistics box on histograms
    - file      = output file name (default: ana_<config-filename>_<tag>.root)
@@ -201,7 +204,7 @@ USAGE: HepFastSim(int nev, TString cfg, TString opt="")
    - storeopt  = options what information for composite/event shape to store to the output tree (default: 'all')
                  (available: cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape; veto with !...)
    - savehist  = flag whether to save histos to file (default: 0)
-   - savetree  = flag whether to save trees to file (default: 1)
+   - savetree  = list of tree names to save to file (default: 1=all, 0=none)
    - savenmc   = flag whether to save MC tree to file (default: nmc)
    - savefig   = name to save canvas (default: '' = do not save)
    - nosave    = do not save anything (overrides all save settings above!)
@@ -212,6 +215,7 @@ USAGE: HepFastSim(int nev, TString cfg, TString opt="")
 
 Example: HepFastSim(10000, "cfg/demo_jpsi.cfg", "!nmc : nosave")
 ```
+
 The parameters `nev` and `cfg` are mandatory, while `opt` is an optional string with parameter settings extending/superseding the [general options OPT](ConfigurationSetup.md#opt---general-options) in the configuration file. 
 
 The available options as listed above can be assigned to different categories:
