@@ -25,6 +25,8 @@
 * [Demos](Demos.md)
    + [Generator Only](#generator-only)
    + [Geometric Acceptance](#geometric-acceptance)
+   + [PID Templates](#pid-templates)
+   + [Secondary Vertex](#secondary-vertex)
 * [Appendix](Appendix.md)
 
 # Demos
@@ -103,3 +105,99 @@ _Explanation:_
    + Hit map **theta vs phi** for all detectors
 
 ![(Acceptance demo plot)](demo_acc.png)
+
+## PID Templates
+[Back to TOC](#table-of-contents)
+
+Here we try and test some of the PID templates: DIRC (Detection of Internally Reflected Cherenkov light), the dE/dx and the time-of-flight. We plot the simulated quantities and the resultant total PID probabilities (line numbers below are for explanation only).
+```
+01: # ===== Overall options ===== 
+02: OPT  ;;  rndseed=123 : verbose=1 : hconf=400,3 : pidmode=chi2 : nostat : legwid=0.1 : legmarg=0.5 : legtxt=0.05 : print=5000 : hopt=hist scat : errlvl=3
+03: 
+04: # ===== Generators ===== 
+05: GEN  ;;  box : p=0.1,4 : tht=10,150 : pdg=pi+-, K+-, p+ cc : mult=1 
+06: 
+07: # ===== Trees/Reco ===== 
+08: REC  ;;  store(trk,ntp0) = evt,cand
+09: 
+10: # ===== Detectors ===== 
+11: TRK  ;;  name=trk  : tht=20,140          # Tracking detector
+12: PID  ;;  name=drc  : tht=20,140 : dircb  # DIRC template (barrel)
+13: PID  ;;  name=dedx : tht=20,140 : dedx   # dE/dx template (STT)
+14: PID  ;;  name=tof  : tht=20,140 : tofb   # ToF template (barrel)
+15: 
+16: # ===== Histograms ===== 
+17: HIST ;; tree=ntp0 : var=xp, xdrc  : hist=100,0,4,100,0,0.9 : cut=abs(xtrpdg)==211 : leg=\pi : legpos=br : title=DIRC;p [GeV/c];\theta_{c} [rad]
+18: HIST ;; cut=abs(xtrpdg)==321 : leg=K   
+19: HIST ;; cut=abs(xtrpdg)==2212 : leg=p  
+20: 
+21: HIST ;; tree=ntp0 : var=xp, xdedx : hist=100,0,4,100,2,20 : cut=abs(xtrpdg)==211 : leg=\pi : legpos=tr : title=dE/dx;p [GeV/c];dE/dx [keV/cm]
+22: HIST ;; cut=abs(xtrpdg)==321 : leg=K  
+23: HIST ;; cut=abs(xtrpdg)==2212 : leg=p 
+24: 
+25: HIST ;; tree=ntp0 : var=xp, xtof  : hist=100,0,4,100,0,1.2 : cut=abs(xtrpdg)==211 : leg=\pi : legpos=br : title=TOF;p [GeV/c];\beta_{TOF}
+26: HIST ;; cut=abs(xtrpdg)==321 : leg=K   
+27: HIST ;; cut=abs(xtrpdg)==2212 : leg=p  
+28: 
+29: HIST ;; tree=ntp0 : var=xpidpi : hist=0,1 : cut=abs(xtrpdg)==211 : leg=\pi : logy : title=pion PID;P_{\pi}
+30: HIST ;; cut=abs(xtrpdg)!=211 : leg=non-\pi
+31: 
+32: HIST ;; tree=ntp0 : var=xpidk : hist=0,1 : cut=abs(xtrpdg)==321 : leg=K : logy : title=kaon PID;P_{K}
+33: HIST ;; cut=abs(xtrpdg)!=321 : leg=non-K
+34: 
+35: HIST ;; tree=ntp0 : var=xpidp : hist=0,1 : cut=abs(xtrpdg)==2212 : leg=p : logy : title=proton PID;P_{p}
+36: HIST ;; cut=abs(xtrpdg)!=2212 : leg=non-p
+```
+_Explanation:_
+* (01) : Define general options  (`errlvl=3` suppresses the `SCAT is deprecated` output)
+* (05) : Setup of a **box generator** generating **pions, kaons, protons** over large p- and theta range
+* (08) : Store a TTree with the **single tracks** (no combinatorics)
+* (11) : Setup **tracking detector** to cover **full phase-space** (we need detected tracks for PID information)
+* (12-14) : Define **PID detectors** based on the templates **dircb** (barrel DIRC), **dedx** and **tofb** (barrel ToF)
+* (17-27) : Generate histograms of **PID info (xdrc, xdedx, xtof) vs. momentum** for the three different particle species (pi, K, p)
+* (29-36) : Generate histograms of **PID probability** for the three particle species
+
+![(PID template demo plot)](demo_pid.png)
+
+## Secondary Vertex
+[Back to TOC](#table-of-contents)
+
+Although there is no actual vertex fitting available in `HepFastSim`, a simple POCA (= point of closest approach) finder is applied for all composite candidates to find the best matching decay position. Currently this only has an effect for an assumed solenoidal field parallel to the z-axis. Also, to take effect the track propagation towards the IP must be switched on.
+```
+01: # ===== Overall options ===== 
+02: OPT  ;;  rndseed=123 : verbose=1 : hconf=400,3 : bzfield=1.5 : prop2ip
+03: 
+04: # ===== Generators ===== 
+05: GEN  ;;  phsp : ecm = 4.6, 0.00965 : reaction=anti-p-,p+ : fixtarget 
+06: GEN  ;;  phsp : f=0.9 : c=1 : dec = beams -> pi+ pi- pi+ pi- pi0 
+07: GEN  ;;  phsp : f=0.1 : c=2 : dec = beams -> K_S0 pi+ pi- pi0 ; K_S0 -> pi+ pi-
+08: 
+09: # ===== Detectors ===== 
+10: TRK  ;;  name = trk : ptmin=0.1  : tht=20,160 : dp=2 : dtht=1 : dphi=1 : dvtx=0.50,0.50,0.80 : dist=15
+11: 
+12: # ===== Trees/Reco ===== 
+13: REC  ;;  dec = K_S0 -> pi+ pi- : m(K_S0)=0.4,0.6 : store(K_S0, ntp0)=cand, evt
+14: 
+15: # ===== Histograms ===== 
+16: HIST ;;  tree=ntp0 : hist=0.4,0.6 : divx=505 : title=m(\pi^{+}\pi^{\minus});m [GeV/c^{2}] : leg=all 
+17: HIST ;;  cut=!xmct : leg=no match
+18: HIST ;;  cut=xmct  : leg=match K_{S}
+19: HIST ;;  cut=xmct  : var=fxm : leg=match K_{S} (@poca) 
+20: 
+21: HIST ;;  tree=ntp0 : var=xctau : hist=0,10 : logy : cut = xmct : title=c\tau(K_{S});c\tau [cm] : leg=match K_{S}
+22: HIST ;;  cut=!xmct : leg=no match
+23: 
+24: HIST ;;  tree=ntp0 : var=xvqa : hist=0,2 : logy : title=Vertex QA : cut=xmct : leg=match K_{S}
+25: HIST ;;  cut=!xmct : leg=no match
+```
+_Explanation:_
+* (02) : In the overall options, `bzfield=1.5 : prop2ip` set the **solenoidal field to 1.5T**, and enables **track to IP propagation**
+* (05-07) : Generator `phsp` is configured to generate **2pi+ 2pi+ pi0 (90%)** and **KS pi+ pi- pi0 (10%)** events
+* (10) : Setup **tracking detector** with certain **vertex resolution** (`dvtx = dvx, dvy, dvz`)
+* (13) : Reconstruct **KS -> pi+ pi-** and store TTree
+* (16-19) : **Invariant mass** histograms of **all KS** candidate, **w/o MC match**, **w/ MC match**, and w/MC match **propagated to common POCA**. 
+* (21-22) : Reconstructed **c·tau** of **matched** and **non matched** candidates; fit of exponential finds c·tau = 2.58cm
+* (24-25) : Display of **vertex QA**, that is the **DOCA** (=distance of closest approach) of **track pairs** forming a KS
+ 
+![(Secondary vertex demo plot)](demo_vtx.png)
+
