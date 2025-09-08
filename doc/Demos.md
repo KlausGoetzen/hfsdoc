@@ -253,7 +253,7 @@ _Explanation:_
 ## Using Variables
 [Back to TOC](#table-of-contents)
 
-As already being addressed in [Configuraion Setup - Using Variables](ConfigurationSetup.md#using-variables) it is possible to use variables per command line, which adds much more flexibility for systematic investigations without the need to provide modified configuration files all the time.
+As already being addressed in [Configuration Setup - Using Variables](ConfigurationSetup.md#using-variables) it is possible to use variables per command line, which adds much more flexibility for systematic investigations without the need to provide modified configuration files all the time.
 
 As an example let us consider the following config-file to learn the opportunities. It is a slight variation of the above background demo.
 ```
@@ -300,7 +300,9 @@ HIST ;;  tree=nmc : var=p : hist=0,10 : title=gen. mom;p [GeV/c]
 
 When calling as
 ```
-HFS(20000,"cfg/demo_var.cfg","$ecm=5:$thtrng=5,80:$userhist={tree=ntp0:var=xtht*57.3:hist=0,180:title=;#theta [deg]}:$bgopt=trig=K_S0:$frac=0.1")
+root [9] HFS(20000, "cfg/demo_var.cfg", "$ecm=5 : $thtrng=5,80 :"
+                    "$userhist={tree=ntp0:var=xtht*57.3:hist=0,180:title=;\\theta [deg]} :"
+                    "$bgopt=trig=K_S0 : $frac=0.1")
 ```
 we get
 ```
@@ -309,6 +311,6 @@ GEN  ;;  phsp : f=0.1 : c=1 : dec=beams -> phi pi+ pi- ; phi -> K+ K-
 GEN  ;;  phsp : f=0.2 : c=10000 : file=parms/ftf_pbp.dat : trig=K_S0
 TRK  ;;  name = trk : ptmin=0.1 : tht=5,80 : dp=2 : dtht=1 : dphi=1 : eff=1.0
 [...]
-]HIST ;;  tree=ntp0:var=xtht*57.3:hist=0,180:title=;#theta [deg]
+HIST ;;  tree=ntp0:var=xtht*57.3:hist=0,180:title=;\theta [deg]
 ```
 ![(Variables demo plot 2)](demo_var_2.png)
