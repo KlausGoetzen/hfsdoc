@@ -188,4 +188,4 @@ There are (for the time being) four parameter files bundled with the software:
 | ftf_pbp.dat              | Parametrization of anti-p p generic reactions from FTF event generator (5264 channels)  |
 | ftf_pp.dat               | Parametrization of pp generic reactions from FTF event generator (3031 channels)        |
 
-Proceed to the next section: [Getting Started](doc/GettingStarted.md)
+Proceed to the next section: [Getting Started](GettingStarted.md)

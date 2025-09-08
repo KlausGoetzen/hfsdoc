@@ -163,3 +163,5 @@ root -l 'HepDrawHistos.C("cfg/demo_mini.cfg")'  // -> auto-generates file name "
 ```
 
 displaying the canvas with the two plots as shown in the [introduction](../README.md#introduction).
+
+Proceed to the next section: [Demos](Demos.md)
