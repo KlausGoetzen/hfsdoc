@@ -37,6 +37,8 @@
    + [PID - Particle Identification Detectors](#pid---particle-identification-detectors)
    + [REC - REC - Reconstruction/Analysis](#rec---reconstructionanalysis)
    + [HIST - Live Histograms](#hist---live-histograms)
+   + [Using Variables](#using-variables)
+
 * [Running on Virgo](Virgo.md)
 * [Tools](Tools.md)
 * [Demos](Demos.md)
@@ -56,33 +58,44 @@ If the included file `<file name>` itself contains an `INC` statement, the inclu
 ## OPT - General Options
 [Back to TOC](#table-of-contents)
 
-General options globally steer the behaviour of HepFastSim. Some options have impact on the simulation itself, others are related to storage options or histogramming.
+General options globally steer the behaviour of HepFastSim. Some options have impact on the simulation itself, others are related to storage options or histogramming. 
 
-| Parameter   | Meaning                                                                                            | Default                       |
-| ----------- | ---------------------------------------------------------------------------------------------------| ----------------------------- |
-| `verbose`   | verbosity level (the higher the more is printed)                                                   | `0`                           |
-| `gen`       | name of generator config file                                                                      | global options file           |
-| `det`       | name of detector config file                                                                       | global options file           |
-| `ana`       | name of analysis config file                                                                       | global options file           |
-| `storeopt`  | store options for composites and event shape; veto by prepending `!` to option. Available options: |                               |
-|             | `all, cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape`                      | `all` (store everything)      |
-| `pidmode`   | global PID mode: chi2 or lh                                                                        | `chi2`                        |
-| `mode`      | arbitrary mode number stored in all TTrees                                                         | `0`                           |
-| `tag`       | arbirtary tag (string) appended to output file                                                     | _empty_                       |
-| `print`     | cycle (number of events) to update live histos / print event number                                | `1000`                        |
-| `errlvl`    | ROOT error level output suppression (number from 0 to 4)                                           | `0` _(no suppression)_        |
-| `mcphot`    | number of additional low energetic photons to allow for successful MC truth match                  | `5`                           |
-| `mcethresh` | energy threshold for low energetic photons                                                         | `0.03` \[GeV]                 |
-| `bzfield`   | field strength of optional solenoid field in z-direction around IP                                 | `0.0` \[T]                    |
-| `prop2ip`   | _flag:_ propagate (secondary) tracks to z=0                                                        | `0` _(false)_                 |
-| `rndseed`   | random seed (for reproducibility)                                                                  | `0` (= not fixed)             |
-| `hconf`     | canvas configuration for live historgrams as _padwidth, columns_                                   | `400,4`                       |
-| `nmc`       | _flag:_ generate MC truth TTree                                                                    | `0` _(false)_                 |
-| `savenmc`   | _flag:_ save MC truth TTree to output file                                                         | `0` _(false)_                 |
-| `savetree`  | _flag:_ save all analysis TTrees to output file                                                    | `1` _(true)_                  |
-| `savehist`  | _flag:_ save histograms to output file                                                             | `0` _(false)_                 |
-| `savefig`   | name under which to save live histogram canvas                                                     | _none_ (= do not save canvas) |
-| `file`      | name of output file                                                                                | `ana_<cfg>_<tag>.root`        |
+This table shows all parameters that are available. They can appear either in the config file in a line starting with `OPT` or in the options string directly passed to the `HepFastSim.C` macro (see [Running the Simulation](#running-the-simulation)).
+
+| Parameter   | Meaning                                                                        | Default                 |
+| ----------- | -------------------------------------------------------------------------------| ----------------------- |
+| `verbose`   | verbosity level (the higher the more is printed)                               | `0`                     |
+| `info`      | print parameter infos                                                          | `0`                     |
+| `gen`       | name of generator config file                                                  | global options file     |
+| `det`       | name of detector config file                                                   | global options file     |
+| `ana`       | name of analysis config file                                                   | global options file     |
+| `storeopt`  | store options for trees; veto by prepending `!` to option. Available options:  |                         |
+|             | `all, cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape`  | `all` _(store all)_     |
+| `pidmode`   | global PID mode: chi2 or lh                                                    | `chi2`                  |
+| `mode`      | arbitrary mode number stored in all TTrees                                     | `0`                     |
+| `tag`       | arbirtary tag (string) appended to output file                                 | ""                      |
+| `print`     | cycle (number of events) to update live histos / print event number            | `1000`                  |
+| `errlvl`    | ROOT error level output suppression (number from 0 to 4)                       | `0` _(no suppression)_  |
+| `mcphot`    | number of additional low energetic photons allowed for MC truth match          | `5`                     |
+| `mcethresh` | energy threshold for low energetic photons                                     | `0.03` \[GeV]           |
+| `bzfield`   | field strength of optional solenoid field in z-direction around IP             | `0.0` \[T]              |
+| `prop2ip`   | _flag:_ propagate (secondary) tracks to z=0                                    | `false`                 |
+| `rndseed`   | random seed (for reproducibility)                                              | `0` _(not fixed)_       |
+| `hconf`     | canvas configuration for live historgrams as `<padwidth>, <columns>`           | `400,4`                 |
+| `hopt`      | default histogram draw option                                                  | "" _(ROOT default)_     |
+| `legtxt`    | default legend text size                                                       | `0.04`                  |
+| `legwid`    | default legend width                                                           | `0.25`                  |
+| `legmarg`   | default legend margin                                                          | `0.3`                   |
+| `noleg`     | _flag:_ globally suppress legends                                              | `false`                 |
+| `nostat`    | _flag:_ globally suppress statistics box                                       | `false`                 |
+| `nmc`       | _flag:_ generate MC truth TTree                                                | `false`                 |
+| `savenmc`   | _flag:_ save MC truth TTree to output file                                     | `false`                 |
+| `savehist`  | _flag:_ save histograms to output file                                         | `false`                 |
+| `savetree`  | list of analysis TTree names to store (`1` = all)                              | `1`                     |
+| `savefig`   | file name to save live histogram canvas                                        |  "" _(do not save)_     |
+| `nosave`    | suppress all file output (trees, hist, fig)                                    | `false`                 |
+| `file`      | name of output file                                                            | `ana_<cfg>_<tag>.root`  |
+
 
 ## ADD - Particle Database Manipulation
 [Back to TOC](#table-of-contents)
@@ -694,7 +707,6 @@ HIST ;; tree=ntp2 : hist=10,21,0,2.5 : var=xdal01,xdal12 : opt=col  # Dalitz plo
 HIST ;; tree=nmc  : hist=0,3,0,180 : var=p,tht*57.3 : opt=col       # plot p vs. theta (in degrees) from generated events
 ```
 
-
 ### Overlaying histograms
 Sometimes it is useful to draw multiple histograms to the same pad for direct comparison. If the draw option `<opt>` contains the keyword `same` (just like in ROOT), the drawing engine overlays the plot to the current pad instead of the next one. Since it happens quite frequently that many setting in the histogram being overlay are identical to the previous one (histogram dimensions, variable, tree, title, ...), those identical settings don't need to be specified again. In that case, the color is automatically chosen, so that only very few settings have to be given explicitly. The setting `opt=same` is automatically enabled if `hist` is not set, so that even that can be omitted. An example (used for the PID quantity plots above) looks like this:
 
@@ -706,5 +718,23 @@ HIST ;;  cut=abs(xtrpdg)==321  : leg = kaon
 HIST ;;  cut=abs(xtrpdg)==2212 : leg = proton
 ```
 Only the first histogram has a lengthy definition, while for the other particle types just the new cut and legend entry is set. 
+
+
+## Using Variables
+Beside setting the available parameters for `OPT`, it is possible to use parameters with arbitrary names starting with `$` as variables, which later can be used in the rest of the configuration file and are globally replaced. This feature is very useful if (part of) the simulation setup should be controlled dynamically by command line parameters. All variables must be set either in an `OPT` statement or within the additional option string being the third parameter of the steering macro `HepFastSim.C` (see [Running the Simulation](#running-the-simulation)). 
+
+E.g. the configuration setup
+```
+[demo_var.cfg]
+  OPT ;; $thtrng=20,160 : $dp=1
+  TRK ;; name=trk : tht=$thtrng : dp=$dp : dtht=1 : dphi=2
+
+root [0] HepFastSim(1000, "demo_var.cfg")
+```
+results in the detector setting `TRK ;; name=trk : tht=20,160 : dp=1 : dtht=1 : dphi=2`, but when called as 
+```
+root [1] HepFastSim(1000, "demo_var.cfg", "$thtrng=30,120 : $dp=2")
+```
+been modified to `TRK ;; name=trk : tht=30,120 : dp=2 : dtht=1 : dphi=2`. Take a look at the more comprehensive example [Demos - Using Variables](Demos.md#using-variables)
 
 Proceed to the next section: [Tools](Tools.md)

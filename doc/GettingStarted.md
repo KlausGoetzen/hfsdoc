@@ -55,8 +55,9 @@ Multiple parameter settings can be done by concatenation of individual expressio
 * Parameters sometimes can/must carry specifiers in parenthesis (e.g. `store(J/psi, ntp1) = evt : pidmu(mu+) = 0.1`)
 * Whitespace in comma/semicolon separated lists around the separator character is ignored (only relevant for string values)
 * The value `<parameter_value(s)>` can be
-  * an integer, float, or string 
+  * an integer, float, or string
   * a comma separated list of integers, floats, or strings, and sometimes mixtures of the three types 
+  * a mathematical expression instead of a number
   * a semicolon separated list, used for decay chain definitions
   * a white-space separated list, used for single decay definitions
   * omitted (this has default value of 1 like a flag, e.g. `nosave` means `nosave=1`)
@@ -71,7 +72,7 @@ Multiple parameter settings can be done by concatenation of individual expressio
   * `print=1000 : !nmc : nosave`
   * `f = 0.8 : file = parms/ftf_pbp.dat`
   * `hist=50,10,21,50,0,2.5 : var=xdal01,xdal12`
-  * `phsp : ecm = 4.6, 0.00965 : reaction = anti-p-, p+ : fixtarget`
+  * `phsp : ecm=sqrt((0.938+sqrt(0.938^2+10^2))^2-10^2), 0.00965 : reaction = anti-p-, p+ : fixtarget`
   * `title = fitted m(\mu^{+}\mu^{\minus});m [GeV/c^{2}] : leg = \chi^{2} cut`
   * `dec = pbp -> J/psi pi+ pi- ; J/psi -> mu+ mu-`
   * `pidmu(mu+-) = 0.1,1` can be abbreviated to `pidmu(mu+-) = 0.1` (acts as `>=`)

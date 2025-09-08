@@ -28,6 +28,7 @@
    + [PID Templates](#pid-templates)
    + [Secondary Vertex](#secondary-vertex)
    + [Background Study](#background-study)
+   + [Using Variables](#using-variables)
 * [Appendix](Appendix.md)
 
 # Demos
@@ -249,3 +250,65 @@ _Explanation:_
 ![(Generic background demo plot)](demo_genbg.png)
 
 
+## Using Variables
+[Back to TOC](#table-of-contents)
+
+As already being addressed in [Configuraion Setup - Using Variables](ConfigurationSetup.md#using-variables) it is possible to use variables per command line, which adds much more flexibility for systematic investigations without the need to provide modified configuration files all the time.
+
+As an example let us consider the following config-file to learn the opportunities. It is a slight variation of the above background demo.
+```
+01: # ===== Overall options ===== 
+02: OPT  ;;  rndseed=1 : verbose=1 : hconf=400,3 : nostat : legwid=0.38 : nmc : $thtrng=20,160 
+03: OPT  ;;  $userhist={tree=nmc : var=p : hist=0,10 : title=gen. mom;p [GeV/c]} : $ecm=4.6 : $frac=0.2 : $bgopt=
+04: 
+05: # ===== Generators ===== 
+06: GEN  ;;  phsp : ecm=$ecm : reaction=anti-p-, p+ : fixtarget
+07: GEN  ;;  phsp : f=$frac : c=1 : dec=beams -> phi pi+ pi- ; phi -> K+ K- # signal 
+08: GEN  ;;  phsp : f=0.2 : c=10000 : file=parms/ftf_pbp.dat : $bgopt       # generic BG
+09: 
+10: # ===== Detectors ===== 
+11: TRK  ;;  name = trk : ptmin=0.1 : tht=$thtrng : dp=2 : dtht=1 : dphi=1 : eff=1.0
+12: 
+13: # ===== Trees/Reco ===== 
+14: REC  ;;  store(trk,ntp0) = evt,cand
+15: REC  ;;  dec= phi -> K+ K- : store(phi,ntp1) = evt,cand
+16: 
+17: # ===== Histograms ===== 
+18: HIST ;;  tree=ntp1 : hist=0.98,1.1 : title=K^{+}K^{\minus} mass;m [GeV/c^{2}] : leg=all : legpos=tr
+19: HIST ;;  cut=chan==1 : leg=signal
+20: HIST ;;  cut=chan>1 && chan<9999 : leg=generic bg
+21: HIST ;;  cut=chan>9999 : leg=generic (trig K\lower[0.4]{\scale[0.7]{S}})
+22: 
+23: HIST ;;  $userhist
+```
+_Explanation:_
+* (02-03) : Overall options and variables definition; we would like to control several settings per command line.
+* (06-08) : Generator setup; here `$ecm` (energy), `$frac` (signal fractions) and `$bgopt` (options for generic events) can be modified
+* (11) : Tracking detector; we want to control the polar angle coverage by `$thtrng`
+* (23) : A complete histogram can be defined via command line.
+
+Running the simulation without additional options with `HFS(20000, "cfg/demo_var.cfg")` gives this effective config-file and plot as output:
+```
+GEN  ;;  phsp : ecm=4.6 : reaction=anti-p-, p+ : fixtarget
+GEN  ;;  phsp : f=0.2 : c=1 : dec=beams -> phi pi+ pi- ; phi -> K+ K-
+GEN  ;;  phsp : f=0.2 : c=10000 : file=parms/ftf_pbp.dat : 
+TRK  ;;  name = trk : ptmin=0.1 : tht=20,160 : dp=2 : dtht=1 : dphi=1 : eff=1.0
+[...]
+HIST ;;  tree=nmc : var=p : hist=0,10 : title=gen. mom;p [GeV/c]
+```
+![(Variables demo plot 1)](demo_var_1.png)
+
+When calling as
+```
+HFS(20000,"cfg/demo_var.cfg","$ecm=5:$thtrng=5,80:$userhist={tree=ntp0:var=xtht*57.3:hist=0,180:title=;#theta [deg]}:$bgopt=trig=K_S0:$frac=0.1")
+```
+we get
+```
+GEN  ;;  phsp : ecm=5 : reaction=anti-p-, p+ : fixtarget
+GEN  ;;  phsp : f=0.1 : c=1 : dec=beams -> phi pi+ pi- ; phi -> K+ K-
+GEN  ;;  phsp : f=0.2 : c=10000 : file=parms/ftf_pbp.dat : trig=K_S0
+TRK  ;;  name = trk : ptmin=0.1 : tht=5,80 : dp=2 : dtht=1 : dphi=1 : eff=1.0
+[...]
+]HIST ;;  tree=ntp0:var=xtht*57.3:hist=0,180:title=;#theta [deg]
+```
+![(Variables demo plot 2)](demo_var_2.png)

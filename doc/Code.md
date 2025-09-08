@@ -49,6 +49,9 @@ The code and parameter data are arranged in the following directory structure. T
 │   ├── demo_mini.cfg
 │   ├── demo_pid.cfg
 │   ├── demo_ppcharm.cfg
+│   ├── demo_rhopi.cfg
+│   ├── demo_var.cfg
+│   ├── demo_vtx.cfg
 │   ├── det_besiii.cfg
 │   ├── det_panda.cfg
 │   ├── det_panda_eff.cfg
@@ -56,20 +59,25 @@ The code and parameter data are arranged in the following directory structure. T
 │   ├── hpid_panda.cfg
 │   └── pid_templates.cfg
 ├── doc
-│   ├── acc.png
 │   ├── Appendix.md
 │   ├── Code.md
 │   ├── ConfigurationSetup.md
-│   ├── demo_acc.png
-│   ├── demo_gen.png
-│   ├── demo.png
 │   ├── Demos.md
 │   ├── GeneralConcept.md
 │   ├── GettingStarted.md
-│   ├── pidexample.png
-│   ├── pidpdf.png
 │   ├── Tools.md
-│   └── Virgo.md
+│   ├── Virgo.md
+│   ├── acc.png
+│   ├── demo.png
+│   ├── demo_acc.png
+│   ├── demo_gen.png
+│   ├── demo_jpsi.png
+│   ├── demo_pid.png
+│   ├── demo_var_1.png
+│   ├── demo_var_2.png
+│   ├── demo_vtx.png
+│   ├── pidexample.png
+│   └── pidpdf.png
 ├── parms
 │   ├── dpm.dat
 │   ├── ftf_pbp.dat
