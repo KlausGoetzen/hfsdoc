@@ -258,8 +258,8 @@ As already being addressed in [Configuration Setup - Using Variables](Configurat
 As an example let us consider the following config-file to learn the opportunities. It is a slight variation of the above background demo.
 ```
 01: # ===== Overall options ===== 
-02: OPT  ;;  rndseed=1 : verbose=1 : hconf=400,3 : nostat : legwid=0.38 : nmc : $thtrng=20,160 
-03: OPT  ;;  $userhist={tree=nmc : var=p : hist=0,10 : title=gen. mom;p [GeV/c]} : $ecm=4.6 : $frac=0.2 : $bgopt=
+02: OPT  ;;  rndseed=1 : verbose=1 : hconf=400,3 : nmc : $thtrng=20,160 : $ecm=4.6 : $frac=0.1 : ...
+03:          $userhist={tree=nmc : var=p : hist=0,10 : title=gen. mom;p [GeV/c]} : $bgopt=
 04: 
 05: # ===== Generators ===== 
 06: GEN  ;;  phsp : ecm=$ecm : reaction=anti-p-, p+ : fixtarget
@@ -274,12 +274,11 @@ As an example let us consider the following config-file to learn the opportuniti
 15: REC  ;;  dec= phi -> K+ K- : store(phi,ntp1) = evt,cand
 16: 
 17: # ===== Histograms ===== 
-18: HIST ;;  tree=ntp1 : hist=0.98,1.1 : title=K^{+}K^{\minus} mass;m [GeV/c^{2}] : leg=all : legpos=tr
-19: HIST ;;  cut=chan==1 : leg=signal
-20: HIST ;;  cut=chan>1 && chan<9999 : leg=generic bg
-21: HIST ;;  cut=chan>9999 : leg=generic (trig K\lower[0.4]{\scale[0.7]{S}})
-22: 
-23: HIST ;;  $userhist
+18: HIST ;;  tree=ntp1 : hist=0.98,1.1 : title=K^{+}K^{\minus} mass;m [GeV/c^{2}] : leg=all 
+19: HIST ;;  cut=chan==1   : leg=signal
+20: HIST ;;  cut=chan>9999 : leg=generic bg
+21: 
+22: HIST ;;  $userhist
 ```
 _Explanation:_
 * (02-03) : Overall options and variables definition; we would like to control several settings per command line.
@@ -300,9 +299,8 @@ HIST ;;  tree=nmc : var=p : hist=0,10 : title=gen. mom;p [GeV/c]
 
 When calling as
 ```
-root [9] HFS(20000, "cfg/demo_var.cfg", "$ecm=5 : $thtrng=5,80 :"
-                    "$userhist={tree=ntp0:var=xtht*57.3:hist=0,180:title=;\\theta [deg]} :"
-                    "$bgopt=trig=K_S0 : $frac=0.1")
+root [9] HFS(20000, "cfg/demo_var.cfg", "$ecm=5 : $thtrng=5,80 : $bgopt=trig=K_S0 : $frac=0.2"
+                    "$userhist={tree=ntp0:var=xtht*57.3:hist=0,90:title=rec. \\theta;\\theta [deg]}")
 ```
 we get
 ```

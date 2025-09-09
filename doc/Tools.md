@@ -149,12 +149,11 @@ like pointed out in [this section](ConfigurationSetup.md#pid-particle-identifica
 ## Histogram Drawing - HepDrawHistos.C
 [Back to TOC](#table-of-contents)
 
-The macro `HepDrawHistos.C` offers an easy way to plot a bunch of histograms from a ROOT `TTree`. In particular it simply re-draws live histograms from a simulation job based on the output file and the configuration file containing the `HIST` statements. The macro expects up to four input parameters `HepDrawHistos.C(cfg, file, width, stat)`
+The macro `HepDrawHistos.C` offers an easy way to plot a bunch of histograms from a ROOT `TTree`. In particular it simply re-draws live histograms from a simulation job based on the output file and the configuration file containing the `HIST` statements. The macro expects up to three input parameters `HepDrawHistos(cfg, file, opt) `
 
-* `cfg`: name of the config file with the histogram definitions; see [HIST section](ConfigurationSetup.md#hist---live-histograms) for details
-* `file`: input ROOT file name containing the `TTrees` to plot the histograms (auto-generated from cfg-file if not specified)
-* `width`: width of pads; default: 450
-* `stat`: configuration code for statistic box; default: 10
+* `cfg`: config file name (`.cfg`) for given analysis file; see [HIST section](ConfigurationSetup.md#hist---live-histograms) for details
+* `file`: analysis file name (.root); can be skipped if standard name `ana_<cfg>.root`
+* `opt`: string with formatting options (`stat, hconf, hopt, legtxt, legwid, legmarg, legpos, nostat, noleg`)
 
 For example, if we would like to re-draw the plots from the simulation corresponding to `cfg/demo_mini.cfg`, we just need to execute
 
