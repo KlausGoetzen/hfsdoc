@@ -44,6 +44,7 @@ The code and parameter data are arranged in the following directory structure. T
 │   ├── demo_dispvtx.cfg
 │   ├── demo_fitmass.cfg
 │   ├── demo_gen.cfg
+│   ├── demo_genbg.cfg
 │   ├── demo_gluex.cfg
 │   ├── demo_jpsi.cfg
 │   ├── demo_mini.cfg
