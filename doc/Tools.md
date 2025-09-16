@@ -31,6 +31,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    + [Histogram Drawing](#histogram-drawing---hepdrawhistosc)
 * [Demos](Demos.md)
 * [Appendix](Appendix.md)
+* [References](References.md)
 
 # Tools
 

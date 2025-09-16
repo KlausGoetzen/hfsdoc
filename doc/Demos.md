@@ -33,6 +33,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    + [Background Study](#background-study)
    + [Using Variables](#using-variables)
 * [Appendix](Appendix.md)
+* [References](References.md)
 
 # Demos
 

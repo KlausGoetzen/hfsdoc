@@ -29,6 +29,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 * [Tools](Tools.md)
 * [Demos](Demos.md)
 * [Appendix](Appendix.md)
+* [References](References.md)
 
 # General Concept
 [Back to TOC](#table-of-contents)

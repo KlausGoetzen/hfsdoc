@@ -27,6 +27,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 * [Tools](doc/Tools.md)
 * [Demos](doc/Demos.md)
 * [Appendix](doc/Appendix.md)
+* [References](doc/References.md)
 
 # Introduction
 
