@@ -43,7 +43,6 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
      - [Overlaying Histograms](#overlaying-histograms)
      - [Lorentz Vector Expansion](#lorentz-vector-expansion)
    + [Using Variables](#using-variables)
-
 * [Running on Virgo](Virgo.md)
 * [Tools](Tools.md)
 * [Demos](Demos.md)
@@ -781,7 +780,7 @@ Collection name='TList', class='TList', size=2
 
 The alias name is based on the orignal expression in the way, that all characters/sequences in {`+`, `)`, `[`, `]`, `xd`, `,`, `;`} are removed, and {`(`, `-`} are replaced by `_`.
 
-The Lorentz vector transformation is done by the function `ExpandFml(TStr expr, TTree *t=nullptr)` (or shorter `XP(...)`) in `src/HepFastAux.C` and can be used independently. When `t` is specified, the aliase are added to `t` and the returned expression uses them. Otherwise the long from is returned. 
+The Lorentz vector transformation is done by the function `ExpandFml(TStr expr, TTree *t=nullptr)` (or shorter `XP(...)`) in `src/HepFastAux.C` and can be used independently. When `t` is specified, the aliases are added to `t` and the returned expression uses them. Otherwise the long from is returned. 
 
 Try with loading `HepFastAux.C` and the output of `cfg/demo_jpsi.cfg`.
 ```
