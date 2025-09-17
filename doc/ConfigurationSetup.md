@@ -27,10 +27,10 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    + [OPT - General Options](#opt---general-options)
    + [ADD - Particle Database Manipulation](#add---particle-database-manipulation)
    + [GEN - Event Generation/Input](#gen---event-generationinput)
-     - [evtreader](#evtreader)
-     - [partreader](#partreader)
-     - [box](#box)
-     - [phsp](#phsp)
+     - [EvtGen Reader (evtreader)](#evtgen-reader-evtreader)
+     - [TParticle Reader (partreader)](#tparticle-reader-partreader)
+     - [Box Generator (box)](#box-generator-box)
+     - [PhaseSpace Generator (phsp)](#phasespace-generator-phsp)
    + [Detector Basics](#detector-basics)
      - [Spatial Acceptance](#spatial-acceptance)
      - [Detection Efficiency](#detection-efficiency)
@@ -40,6 +40,8 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    + [PID - Particle Identification Detectors](#pid---particle-identification-detectors)
    + [REC - REC - Reconstruction/Analysis](#rec---reconstructionanalysis)
    + [HIST - Live Histograms](#hist---live-histograms)
+     - [Overlaying Histograms](#overlaying-histograms)
+     - [Lorentz Vector Expansion](#lorentz-vector-expansion)
    + [Using Variables](#using-variables)
 
 * [Running on Virgo](Virgo.md)
@@ -171,7 +173,7 @@ The generator keyword is one of the following four:
 | `box`        | Box generator (particle gun)                                                         |
 | `phsp`       | Phase-space decayer HepFastPhspGen                                                   |
 
-### evtreader
+### EvtGen Reader (evtreader)
 [Back to TOC](#table-of-contents)
 
 The usage of `evtreader` is very straigh-forward, since there are basically no things to specify except the file name `file`, the tree name `tree` inside the file, the channel number `c` and fraction `f`. The syntax simply looks like this:
@@ -182,7 +184,7 @@ GEN ;; evtreader : c=1 : f=0.2 : file=ppbar_jpsi2pi.root : tree=ntp
 
 If the tree has the default name `ntp`, this default setting can be ommitted.
 
-### partreader
+### TParticle Reader (partreader)
 [Back to TOC](#table-of-contents)
 
 The usage of `partreader` is quite similar to that described above. However, since these readers are assumed to be generic/background event inputs, there are a few more options. Firstly, there is the possibility to filter the input by looking for certain particles (not) to appear. Secondly there is a switch to enable channel mapping, which helps to perform background analysis. The options are
@@ -203,7 +205,7 @@ This reads the events from the given source (the default tree-name `tree=data` c
 
 **One word of caution:** Since events are read from a file and thus are limited, we can run out of events when veto and/or trigger are too selective. So the user should make sure, that the input file has sufficient number of events stored.
 
-### box
+### Box Generator (box)
 [Back to TOC](#table-of-contents)
 
 The box generator acts as a particle gun, which shoots arbitrary particle (without boost) into defined parts of phase space. Parameters that can be specified are
@@ -225,7 +227,7 @@ GEN ;; box : p=1,2 : tht=22,140 : costht : pdg=pi+-, K+-, p+- : mult=0,0,2,4
 
 Here, we generated an even number of final state hadrons between 0 and 4 particles, where half of the time no particle is generated (we have two times zero, and two times non-zero multiplicity). Since there is no fraction `f` defined, the generated particles are appended to the list of particles for every event generated from other sources.
 
-### phsp
+### PhaseSpace Generator (phsp)
 [Back to TOC](#table-of-contents)
 
 The phase space decayer implemented as the class `HepFastPhspGen` based on ROOTs `TGenPhaseSpace` is the most versatile and powerful but also most complex generator to be configured. It primarily acts as a signal channel generator, but it can also be used for either specific background channels, or in combination with a parametrization file from generic generators (like DPM or FTF), as generic background generator. The latter possibilty probably makes it to the most useful generator since it makes HepFastSim completely independent of any external input even for (rough) background studies.
@@ -659,7 +661,7 @@ HIST ;; tree=nmc : hist=0,3,0,180 : var=p,tht*57.3 : opt=col
 With this configuration file, only the box generator is run, and a 2D plot p vs. theta is produced from the generated data.
 
 
-## HIST - Live histograms
+## HIST - Live Histograms
 [Back to TOC](#table-of-contents)
 
 The `HIST` statement allows to generate live histogram from the information stored in the tree with a quite low effort. The configuration comprises many options from the generic underlying `TH1F`/`TH2F` histograms, and a smart way of anticipation minimizes plotting in the same canvas. The general syntax is 
@@ -686,6 +688,7 @@ with the available keywords/options
 | `noleg`                   | _flag_: switch off legend                                          |
 | `logy`                    | _flag_: set log y-axis                                             |
 | `logz`                    | _flag_: set log z-axis (2D plot)                                   |
+| `xp`                      | _flag_: enable Lorentz vector expansion                            |
 | `divx = <ndiv_x>`         | n-divisions for x-axis; default: 510                               |
 | `divy = <ndiv_y>`         | n-divisions for y-axis; default: 510                               |
 | `color = <color>`         | line/marker color; default: automatic choice                       |
@@ -711,7 +714,9 @@ HIST ;; tree=ntp2 : hist=10,21,0,2.5 : var=xdal01,xdal12 : opt=col  # Dalitz plo
 HIST ;; tree=nmc  : hist=0,3,0,180 : var=p,tht*57.3 : opt=col       # plot p vs. theta (in degrees) from generated events
 ```
 
-### Overlaying histograms
+### Overlaying Histograms
+[Back to TOC](#table-of-contents)
+
 Sometimes it is useful to draw multiple histograms to the same pad for direct comparison. If the draw option `<opt>` contains the keyword `same` (just like in ROOT), the drawing engine overlays the plot to the current pad instead of the next one. Since it happens quite frequently that many setting in the histogram being overlay are identical to the previous one (histogram dimensions, variable, tree, title, ...), those identical settings don't need to be specified again. In that case, the color is automatically chosen, so that only very few settings have to be given explicitly. The setting `opt=same` is automatically enabled if `hist` is not set, so that even that can be omitted. An example (used for the PID quantity plots above) looks like this:
 
 ```
@@ -723,6 +728,83 @@ HIST ;;  cut=abs(xtrpdg)==2212 : leg = proton
 ```
 Only the first histogram has a lengthy definition, while for the other particle types just the new cut and legend entry is set. 
 
+### Lorentz Vector Expansion
+[Back to TOC](#table-of-contents)
+
+Sometimes there is the need to compute kinematic variables not being stored in the `TTree`. Since for all particle the individual 4-vector components are available, this can be done by forming corresponding expressions using these components. If e.g. a reconstruction `rho0 -> pi+ pi-; phi -> K+ K-; beams -> rho0 phi` was done, the individual particles in the `TTree` have the prefixes `xd0d0 (pi+), xd0d1 (pi-), xd1d0 (K+), xd1d1 (K-)`. The invariant mass of `xd0d0` and `xd1d1` (`pi+` and `K-`) can be computed as
+```
+sqrt((xd0d0e+xd1d1e)^2-(xd0d0px+xd1d1px)^2-(xd0d0py+xd1d1py)^2-(xd0d0pz+xd1d1pz)^2)
+``` 
+Obviously this expression looks quite complicated and error-prone, although representing a rather basic and simple case of a two-particle invariant mass. If being interested in an invariant mass of more particle under different mass hypothesis, it can really get cumbersome. E.g. the invariant 3-particle mass of `xd1d0=pi+`, `xd1d1=pi-`, and `xd0`, changing the mass hypotheses of the kaon candidates to pion mass, results in
+```
+sqrt((sqrt(0.0194798+xd1d0p^2)+sqrt(0.0194798+xd1d1p^2)+xd0e)^2-(xd1d0px+xd1d1px+xd0px)^2-(xd1d0py+xd1d1py+xd0py)^2-(xd1d0pz+xd1d1pz+xd0pz)^2)
+```
+This kind of expressions can be used in live histogramming but can make the configuration files look quite cluttered. `HepFastSim` therefore has integrated functionallity, that transforms simple intuitive expressions like `m(xd0d0+xd1d1)` and `m(xd1d0+xd1d1+xd0;pi,pi)` to the above forms. 
+
+The available quantities to be transformed (currently) are
+
+| Variable | Quantity               | Formula                    |
+|----------|------------------------|----------------------------|
+| m        | invariant mass         | sqrt(E² - px² - py² - pz²) |  
+| m2       | squared invariant mass | (E² - px² - py² - pz²)     | 
+| p        | momentum               | (px² + py² + pz²)          |
+| tht      | polar angle            | atan2(sqrt(px²+py²), pz)   |
+
+**Syntax rules** for the expressions are:
+* `var(list[;hyp])`
+  + `var` = variable to be computed
+  + `list` = branch/particle pre-/postfixes
+  + `hyp` = optional list of numbers/names for particle hypothesis 
+* Items in `list`
+  + are particle prefixes from reco trees (`x, xd0, xd1d2d1`, etc) or array positions in `nmc` (`[0],[1],[2]`, etc) 
+  + must be separated with either `+` or `-`
+* Items in `hyp` 
+  + must be `,` separated and matching the position of items in `list`; omitted places (like in `pi,,k`) will not be set
+  + can be `e, mu, pi, k, p` or arbitrary float numbers `0.134, 0.98, ...` specifying the mass in GeV/c² 
+
+**Examples:** (somewhere in the `HIST` declaration)
+| Expression                         | Meaning                                                         |
+|------------------------------------|-----------------------------------------------------------------|
+| `xp : var=m(xd0+xd1+xd2d0)`        | Invariant mass of particles `xd0, xd1, xd2d0`                   |
+| `xp : var=m(x-xd1-x4)`             | Recoil/missing mass for particles `xd1` and `xd4`               |
+| `xp : var=m2([1]+[4]),m2([1]+[5])` | Dalitz plot of particles `[1],[4],[5]` for MC tree`nmc`         |
+| `xp : var=m(xd1+xd2;pi,k)`         | Inv. mass of `xd1` and `xd2` with pion and kaon mass hypothesis |
+| `xp : var=m(x-xd0d1;,p)`           | Recoil mass of `xd0d1` with `p` hypothesis, `x` mass unchanged  |
+
+Another handy feature is, that meaningful aliases corresponding to the complicated forms are stored in the output trees as well, that can be used for further online analysis. For the Dalitz plot example (line 3 in the table) above, the tree `nmc` stored in the output file shows:
+```
+root [0] nmc->GetListOfAliases()->Print()
+Collection name='TList', class='TList', size=2
+ OBJ: TNamed    m2_14   ((e[1]+e[4])^2-(px[1]+px[4])^2-(py[1]+py[4])^2-(pz[1]+pz[4])^2)
+ OBJ: TNamed    m2_15   ((e[1]+e[5])^2-(px[1]+px[5])^2-(py[1]+py[5])^2-(pz[1]+pz[5])^2)
+``` 
+
+The alias name is based on the orignal expression in the way, that all characters/sequences in {`+`, `)`, `[`, `]`, `xd`, `,`, `;`} are removed, and {`(`, `-`} are replaced by `_`.
+
+The Lorentz vector transformation is done by the function `ExpandFml(TStr expr, TTree *t=nullptr)` (or shorter `XP(...)`) in `src/HepFastAux.C` and can be used independently. When `t` is specified, the aliase are added to `t` and the returned expression uses them. Otherwise the long from is returned. 
+
+Try with loading `HepFastAux.C` and the output of `cfg/demo_jpsi.cfg`.
+```
+root -l src/HepFastAux.C ana_demo_jpsi.root
+...
+root [0] .ls
+TFile**         ana_demo_jpsi.root
+ TFile*         ana_demo_jpsi.root
+  KEY: TTree    nmc;1   MC truth list
+  KEY: TTree    ntp0;1  trk [REC: ]
+  KEY: TTree    ntp2;1  J/psi [REC: J/psi -> mu+ mu-]
+  KEY: TTree    ntp3;1  beams [REC: beams -> J/psi pi+ pi-]
+
+root [0] XP("m2(xd1+xd2)")
+(TStr) "((xd1e+xd2e)^2-(xd1px+xd2px)^2-(xd1py+xd2py)^2-(xd1pz+xd2pz)^2)"[63]
+
+root [1] XP("m2(xd1+xd2)", ntp3)
+(TStr) "m2_02"[5]
+
+root [2] ntp3->Draw("m2_12","chan==1")
+(long long) 1159
+
+```
 
 ## Using Variables
 Beside setting the available parameters for `OPT`, it is possible to use parameters with arbitrary names starting with `$` as variables, which later can be used in the rest of the configuration file and are globally replaced. This feature is very useful if (part of) the simulation setup should be controlled dynamically by command line parameters. All variables must be set either in an `OPT` statement or within the additional option string being the third parameter of the steering macro `HepFastSim.C` (see [Running the Simulation](#running-the-simulation)). 
