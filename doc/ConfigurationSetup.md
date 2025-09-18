@@ -742,12 +742,15 @@ This kind of expressions can be used in live histogramming but can make the conf
 
 The available quantities to be transformed (currently) are
 
-| Variable | Quantity               | Formula                    |
-|----------|------------------------|----------------------------|
-| m        | invariant mass         | sqrt(E² - px² - py² - pz²) |  
-| m2       | squared invariant mass | (E² - px² - py² - pz²)     | 
-| p        | momentum               | (px² + py² + pz²)          |
-| tht      | polar angle            | atan2(sqrt(px²+py²), pz)   |
+| Variable | Quantity                      | Formula                    |
+|----------|-------------------------------|----------------------------|
+| `m`      | invariant mass                | sqrt(E² - px² - py² - pz²) |  
+| `m2`     | squared invariant mass        | (E² - px² - py² - pz²)     | 
+| `p`      | momentum                      | (px² + py² + pz²)          |
+| `pt`     | transverse momentum           | (px² + py²)                |
+| `tht`    | polar angle                   | atan2(sqrt(px²+py²), pz)   |
+| `oang`   | opening angle of 2 particles  | acos((p1·p2)/(|p1|·|p2|))  |
+| `coang`  | cos of opening angle          | ((p1·p2)/(|p1|·|p2|))      |
 
 **Syntax rules** for the expressions are:
 * `var(list[;hyp])`
@@ -756,7 +759,7 @@ The available quantities to be transformed (currently) are
   + `hyp` = optional list of numbers/names for particle hypothesis 
 * Items in `list`
   + are particle prefixes from reco trees (`x, xd0, xd1d2d1`, etc) or array positions in `nmc` (`[0],[1],[2]`, etc) 
-  + must be separated with either `+` or `-`
+  + must be separated with either `+`, `-` or `,` (`oang`, `coang` only)
 * Items in `hyp` 
   + must be `,` separated and matching the position of items in `list`; omitted places (like in `pi,,k`) will not be set
   + can be `e, mu, pi, k, p` or arbitrary float numbers `0.134, 0.98, ...` specifying the mass in GeV/c² 
