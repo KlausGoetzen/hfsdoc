@@ -762,6 +762,7 @@ The available quantities to be transformed (currently) are
   + can be `e, mu, pi, k, p` or arbitrary float numbers `0.134, 0.98, ...` specifying the mass in GeV/c² 
 
 **Examples:** (somewhere in the `HIST` declaration)
+
 | Expression                         | Meaning                                                         |
 |------------------------------------|-----------------------------------------------------------------|
 | `xp : var=m(xd0+xd1+xd2d0)`        | Invariant mass of particles `xd0, xd1, xd2d0`                   |
