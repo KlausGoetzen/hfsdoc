@@ -742,15 +742,15 @@ This kind of expressions can be used in live histogramming but can make the conf
 
 The available quantities to be transformed (currently) are
 
-| Variable | Quantity                      | Formula                    |
-|----------|-------------------------------|----------------------------|
-| `m`      | invariant mass                | sqrt(E² - px² - py² - pz²) |  
-| `m2`     | squared invariant mass        | (E² - px² - py² - pz²)     | 
-| `p`      | momentum                      | (px² + py² + pz²)          |
-| `pt`     | transverse momentum           | (px² + py²)                |
-| `tht`    | polar angle                   | atan2(sqrt(px²+py²), pz)   |
-| `oang`   | opening angle of 2 particles  | acos((p1·p2)/(|p1|·|p2|))  |
-| `coang`  | cos of opening angle          | ((p1·p2)/(|p1|·|p2|))      |
+| Variable | Quantity                      | Formula                         |
+|----------|-------------------------------|---------------------------------|
+| `m`      | invariant mass                | sqrt(E² - px² - py² - pz²)      |  
+| `m2`     | squared invariant mass        | (E² - px² - py² - pz²)          | 
+| `p`      | momentum                      | sqrt(px² + py² + pz²)           |
+| `pt`     | transverse momentum           | sqrt(px² + py²)                 |
+| `tht`    | polar angle                   | atan2(sqrt(px²+py²), pz)        |
+| `oang`   | opening angle of 2 particles  | acos((p1·p2)/(abs(p1)·abs(p2))) |
+| `coang`  | cos of opening angle          | ((p1·p2)/(abs(p1)·abs(p2)))     |
 
 **Syntax rules** for the expressions are:
 * `var(list[;hyp])`
@@ -784,7 +784,7 @@ Collection name='TList', class='TList', size=2
 
 The alias name is based on the orignal expression in the way, that all characters/sequences in {`+`, `)`, `[`, `]`, `xd`, `,`, `;`} are removed, and {`(`, `-`} are replaced by `_`.
 
-The Lorentz vector transformation is done by the function `ExpandFml(TStr expr, TTree *t=nullptr)` (or shorter `XP(...)`) in `src/HepFastAux.C` and can be used independently. When `t` is specified, the aliases are added to `t` and the returned expression uses them. Otherwise the long from is returned. 
+The Lorentz vector transformation is done by the function `ExpandFml(TStr expr, TTree *t=nullptr., TStr ext)` (or shorter `XP(...)`) in `src/HepFastAux.C` and can be used independently. When `t` is specified, the aliases are added to `t` and the returned expression uses them. Otherwise the long from is returned. The sequence `ext` is a comma separated list of 4-vector extensions (default:`e,px,py,pz,p`). 
 
 Try with loading `HepFastAux.C` and the output of `cfg/demo_jpsi.cfg`.
 ```
@@ -807,7 +807,11 @@ root [1] XP("m2(xd1+xd2)", ntp3)
 root [2] ntp3->Draw("m2_12","chan==1")
 (long long) 1159
 
+root [3] XP("m(p1+p2)",0,".E(),.Px(),.Py(),.Pz(),.P()")
+(TStr) "sqrt((p1.E()+p2.E())^2-(p1.Px()+p2.Px())^2-(p1.Py()+p2.Py())^2-(p1.Pz()+p2.Pz())^2)"[83]
 ```
+
+If enabled for a histogram with `xp`, the 4-vector expansion can also be used in `cut` (e.g. `HIST ;; cut = m([0]+[1])>0.5 : ..`). In order to use this feature also for the `precut` (e.g. `REC ;; store(...) = precut(m(xd0+xd1)>1.35)`), the global option flag `OPT ;; xp : ... ` needs to be set as well.
 
 ## Using Variables
 Beside setting the available parameters for `OPT`, it is possible to use parameters with arbitrary names starting with `$` as variables, which later can be used in the rest of the configuration file and are globally replaced. This feature is very useful if (part of) the simulation setup should be controlled dynamically by command line parameters. All variables must be set either in an `OPT` statement or within the additional option string being the third parameter of the steering macro `HepFastSim.C` (see [Running the Simulation](#running-the-simulation)). 

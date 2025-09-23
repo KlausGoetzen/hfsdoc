@@ -264,6 +264,7 @@ USAGE: HepFastSim(int nev, TString cfg, TString opt="")
    - tag       = arbitrary tag for file name
    - storeopt  = options what information for composite/event shape to store to the output tree (default: 'all')
                  (available: cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape; veto with !...)
+   - xp        = flag whether to allow 4-vector expansion in store:precut (default: 0) 
    - savehist  = flag whether to save histos to file (default: 0)
    - savetree  = list of tree names to save to file (default: 1=all, 0=none)
    - savenmc   = flag whether to save MC tree to file (default: nmc)
@@ -281,13 +282,13 @@ The parameters `nev` and `cfg` are mandatory, while `opt` is an optional string 
 
 The available options as listed above can be assigned to different categories:
 
-| Categorie          | Options                                                        |
-|--------------------|----------------------------------------------------------------|
-| Configuration      | ana, det, gen                                                  |
-| Simulation control | rndseed, nmc, pidmode, mcphot, mcethresh, bzfield, prop2ip     |
-| Histograms         | hconf, legtxt, noleg, nostat                                   |
-| File output        | file, mode, tag, storeopt, savehist, savetree, savenmc, nosave |
-| Console output     | print, info, errlvl, verbose                                   |
+| Categorie          | Options                                                            |
+|--------------------|--------------------------------------------------------------------|
+| Configuration      | ana, det, gen                                                      |
+| Simulation control | rndseed, nmc, pidmode, mcphot, mcethresh, bzfield, prop2ip         |
+| Histograms         | hconf, legtxt, noleg, nostat                                       |
+| File output        | file, mode, tag, storeopt, xp, savehist, savetree, savenmc, nosave |
+| Console output     | print, info, errlvl, verbose                                       |
 
 Running the simulation based on the configuration file `cfg/demo_jpsi.cfg` can simply be done by
 ```
