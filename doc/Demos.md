@@ -385,28 +385,28 @@ As described in the section [Configuration Setup - REC - Selection](Configuratio
 18: # ===== Histograms ===== 
 19: HIST ;;  tree=ntp0 : hist=0.05,0.25 : leg=raw : divx=505 : ...
 20:          title=\pi^{0} candidates;m(\gamma\gamma) [GeV/c^{2}]
-21: HIST ;;  tree=ntp1 : hist=0.05,0.25 : leg=select : opt=same
+21: HIST ;;  tree=ntp1 : hist=0.05,0.25 : leg=veto : opt=same
 22: 
 23: HIST ;;  tree=ntp2 : leg=raw    : hist=0.05,0.80 : divx=505 : legpos=tr : nostat : ...
 24:          title=full \gamma\gamma mass;m(\gamma\gamma) [GeV/c^{2}]
-25: HIST ;;  tree=ntp1 : leg=select : hist=0.05,0.80  : opt=same
-26: HIST ;;  tree=ntp3 : leg=veto   : hist=0.05,0.80  : opt=same
+25: HIST ;;  tree=ntp1 : leg=veto   : hist=0.05,0.80  : opt=same
+26: HIST ;;  tree=ntp3 : leg=select : hist=0.05,0.80  : opt=same
 27: 
 28: HIST ;;  tree=ntp2 : leg=raw    : hist=0.3,0.80 : divx=505 : legpos=tr : nostat : ...
 29:          title=\eta candidates;m(\gamma\gamma) [GeV/c^{2}]
-30: HIST ;;  tree=ntp3 : leg=veto   : hist=0.3,0.80  : opt=same : color=4
+30: HIST ;;  tree=ntp3 : leg=select : hist=0.3,0.80  : opt=same : color=4
 ```
 _Explanation:_
 * (02) : Overall options
-* (05-07) : Setting up generator with **signal `eta -> gamma gamma`** and **generic background**
-* (10) : Add PANDA detector
+* (05-07) : Setting up generator with **signal eta -> gamma gamma** and **generic background**
+* (10) : Use PANDA detector setup for reconstruction
 * (13) : Reconstruct **pi0 -> gamma gamma w/o mass cut** for plotting
 * (14) : Reconstruct **pi0 -> gamma gamma with mass cut** for applying **veto**
 * (15) : Reconstruct **eta -> gamma gamma w/o veto selection** for comparison
 * (16) : Reconstruct **eta -> gamma gamma with veto selection** 
-* (19-21) : Histogram of 2 gamma mass in **pi0 mass region**, overlaying full spectrum and veto selection
-* (23-26) : Histogram of 2 gamma mass in **full mass region**, indicating raw spectrum, veto list selection and veto'd spectrum
-* (28-30) : Histogram of 2 gamma mass in **eta mass region** with good **background suppression by pi0 veto**
+* (19-21) : Histogram of 2 gamma mass in **pi0 mass region** showing full spectrum and veto cut
+* (23-26) : Histogram of 2 gamma mass in **full mass region** showing raw spectrum, veto cut and selected candidates
+* (28-30) : Histogram of 2 gamma mass in **eta mass region** with **background suppression by pi0 veto**
   
 ![(Veto demo plot)](demo_veto.png)
 
