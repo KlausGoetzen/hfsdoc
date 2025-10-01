@@ -46,6 +46,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
      - [Extra Variables](#extra-variables)
    + [HIST - Live Histograms](#hist---live-histograms)
      - [Overlaying Histograms](#overlaying-histograms)
+     - [Lorentz Vector Expansion](#lorentz-vector-expansion)
    + [Using Variables](#using-variables)
 * [Running on Virgo](Virgo.md)
 * [Tools](Tools.md)
@@ -672,8 +673,14 @@ The available quantities to be computed (currently) are:
 | Quantity | Description                                                           |
 |----------|-----------------------------------------------------------------------|
 | `p4`     | full 4-vector information (suffixes: `px,py,pz,e,tht,ctht,phi,pt, m`) |
+| `p4f`    | fitted full 4-vector information (suffixes as above)                  |
+| `p4t`    | true full 4-vector information (suffixes as above)                    |
 | `m`      | invariant mass                                                        |
+| `mf`     | fitted invariant mass                                                 |
+| `mt`     | true invariant mass                                                   |
 | `m2`     | squared invariant mass (useful for Dalitz plots)                      |
+| `m2f`    | fitted squared invariant mass (useful for Dalitz plots)               |
+| `m2t`    | true squared invariant mass (useful for Dalitz plots)                 |
 | `p`      | momentum                                                              |
 | `pt`     | transverse momentum                                                   |
 | `tht`    | polar angle                                                           |
@@ -699,11 +706,11 @@ The available quantities to be computed (currently) are:
 | Expression                             | Meaning                                                         |
 |----------------------------------------|-----------------------------------------------------------------|
 | `m0120 = m(xd0+xd1+xd2d0)`             | Invariant mass of particles `xd0, xd1, xd2d0`                   |
-| `mm14 = m(x-xd1-x4)`                   | Recoil/missing mass for particles `xd1` and `xd4`               |
+| `fmm14 = mf(beam-xd1-x4)`              | Fitted recoil/missing mass for particles `xd1` and `xd4`        |
 | `m2_14 = m2([1]+[4]), m2_14 = m2(1+5)` | Dalitz plot vars. of particles `[1],[4],[5]` for MC tree`nmc`   |
 | `m12pik = {m(xd1+xd2;pi,k)}`           | Inv. mass of `xd1` and `xd2` with pion and kaon mass hypothesis |
 | `mm01p = m(beam-01;,p)`                | Recoil mass of `xd0d1` with `p` hypothesis, `beam` unchanged    |
-| `ang24 = m(2,4)`                       | Opening angle of particles `xd2` and `xd4`                      |
+| `ang24 = mt(2,4)`                      | Original true opening angle of particles `xd2` and `xd4`        |
 
 **These declarations need to be defined by setting the parameter `xvars(<tree name>) = <quantity list>` for individual `TTree`'s inside a `REC` statement.** 
 
@@ -800,6 +807,90 @@ HIST ;;  cut=abs(xtrpdg)==321  : leg = kaon
 HIST ;;  cut=abs(xtrpdg)==2212 : leg = proton
 ```
 Only the first histogram has a lengthy definition, while for the other particle types just the new cut and legend entry is set. 
+
+
+### Lorentz Vector Expansion
+[Back to TOC](#table-of-contents)
+
+In addition to the extra variables being defined in `REC` and added as real branches to the tree, there is another way to use 4-vector based quantities in live histograming, replacing expressions like  
+```
+sqrt((sqrt(0.0194798+xd1d0p^2)+sqrt(0.0194798+xd1d1p^2)+xd0e)^2-(xd1d0px+xd1d1px+xd0px)^2-(xd1d0py+xd1d1py+xd0py)^2-(xd1d0pz+xd1d1pz+xd0pz)^2)
+``` 
+by the much simpler statement `m(xd1d0+xd1d1;pi,pi)`. Similar to the definition above the available quantities to be transformed are
+
+| Variable | Quantity                      | Formula                         |
+|----------|-------------------------------|---------------------------------|
+| `m`      | invariant mass                | sqrt(E² - px² - py² - pz²)      |  
+| `m2`     | squared invariant mass        | (E² - px² - py² - pz²)          | 
+| `p`      | momentum                      | sqrt(px² + py² + pz²)           |
+| `pt`     | transverse momentum           | sqrt(px² + py²)                 |
+| `tht`    | polar angle                   | atan2(sqrt(px²+py²), pz)        |
+| `oang`   | opening angle of 2 particles  | acos((p1·p2)/(abs(p1)·abs(p2))) |
+| `coang`  | cos of opening angle          | ((p1·p2)/(abs(p1)·abs(p2)))     |
+
+In order to switch on the replacement, the parameter setting `xp=1` or simpler `xp` must appear somewhere in the `HIST` definition. With this setting, the short-cuts can be used in parameters `var` and `cut`.
+
+**Syntax rules** for the expressions are similar to the `xvars` setting in `REC`:
+* `var(list[;hyp])`
+  + `var` = variable to be computed
+  + `list` = branch/particle pre-/postfixes
+  + `hyp` = optional list of numbers/names for particle hypothesis 
+* Items in `list`
+  + are particle prefixes from reco trees (`x, xd0, xd1d2d1`, etc) or array positions in `nmc` (`[0],[1],[2]`, etc) 
+  + must be separated with either `+`, `-` or `,` (`oang`, `coang` only)
+* Items in `hyp` 
+  + must be `,` separated and matching the position of items in `list`; omitted places (like in `pi,,k`) will not be set
+  + can be `e, mu, pi, k, p` or arbitrary float numbers `0.134, 0.98, ...` specifying the mass in GeV/c² 
+
+**Examples:** (somewhere in the `HIST` declaration)
+
+| Expression                         | Meaning                                                           |
+|------------------------------------|-------------------------------------------------------------------|
+| `xp : var=m(xd0+xd1+xd2d0)`        | Invariant mass of particles `xd0, xd1, xd2d0`                     |
+| `xp : var=m(x-xd1-x4)`             | Recoil/missing mass for particles `xd1` and `xd4`                 |
+| `xp : var=m2([1]+[4]),m2([1]+[5])` | Dalitz plot of particles `[1],[4],[5]` for MC tree`nmc`           |
+| `xp : var=m(xd1+xd2;pi,k)`         | Inv. mass of `xd1` and `xd2` with pion and kaon mass hypothesis   |
+| `xp : var=m(beam-xd0d1;,p)`        | Recoil mass of `xd0d1` with `p` hypothesis, `beam` mass unchanged |
+
+Another handy feature is, that meaningful aliases corresponding to the complicated forms are stored in the output trees as well, that can be used for further online analysis. For the Dalitz plot example (line 3 in the table) above, the tree `nmc` stored in the output file shows:
+```
+root [0] nmc->GetListOfAliases()->Print()
+Collection name='TList', class='TList', size=2
+ OBJ: TNamed    m2_14   ((e[1]+e[4])^2-(px[1]+px[4])^2-(py[1]+py[4])^2-(pz[1]+pz[4])^2)
+ OBJ: TNamed    m2_15   ((e[1]+e[5])^2-(px[1]+px[5])^2-(py[1]+py[5])^2-(pz[1]+pz[5])^2)
+``` 
+
+The alias name is based on the orignal expression in the way, that all characters/sequences in {`+`, `)`, `[`, `]`, `xd`, `,`, `;`} are removed, and {`(`, `-`} are replaced by `_`.
+
+The Lorentz vector transformation is done by the function `ExpandFml(TStr expr, TTree *t=nullptr., TStr ext)` (or shorter `XP(...)`) in `src/HepFastAux.C` and can be used independently. When `t` is specified, the aliases are added to `t` and the returned expression uses them. Otherwise the long from is returned. The sequence `ext` is a comma separated list of 4-vector extensions (default:`e,px,py,pz,p`). 
+
+Try with loading `HepFastAux.C` and the output of `cfg/demo_jpsi.cfg`.
+```
+root -l src/HepFastAux.C ana_demo_jpsi.root
+...
+root [0] .ls
+TFile**         ana_demo_jpsi.root
+ TFile*         ana_demo_jpsi.root
+  KEY: TTree    nmc;1   MC truth list
+  KEY: TTree    ntp0;1  trk [REC: ]
+  KEY: TTree    ntp2;1  J/psi [REC: J/psi -> mu+ mu-]
+  KEY: TTree    ntp3;1  beams [REC: beams -> J/psi pi+ pi-]
+
+root [0] XP("m2(xd1+xd2)")
+(TStr) "((xd1e+xd2e)^2-(xd1px+xd2px)^2-(xd1py+xd2py)^2-(xd1pz+xd2pz)^2)"[63]
+
+root [1] XP("m2(xd1+xd2)", ntp3)
+(TStr) "m2_12"[5]
+
+root [2] ntp3->Draw("m2_12","chan==1")
+(long long) 1159
+
+root [3] XP("m(p1+p2)",0,".E(),.Px(),.Py(),.Pz(),.P()")
+(TStr) "sqrt((p1.E()+p2.E())^2-(p1.Px()+p2.Px())^2-(p1.Py()+p2.Py())^2-(p1.Pz()+p2.Pz())^2)"[83]
+```
+
+If enabled for a histogram with `xp`, the 4-vector expansion can also be used in `cut` (e.g. `HIST ;; cut = m([0]+[1])>0.5 : ..`). In order to use combined variables in `precut` (e.g. `REC ;; store(...) = precut(m(xd0+xd1)>1.35)`), the parameter `xvars` must be used as described in section [REC - Extra Variables](#extra-variables) above.
+
 
 ## Using Variables
 Beside setting the available parameters for `OPT`, it is possible to use parameters with arbitrary names starting with `$` as variables, which later can be used in the rest of the configuration file and are globally replaced. This feature is very useful if (part of) the simulation setup should be controlled dynamically by command line parameters. All variables must be set either in an `OPT` statement or within the additional option string being the third parameter of the steering macro `HepFastSim.C` (see [Running the Simulation](#running-the-simulation)). 

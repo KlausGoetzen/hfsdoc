@@ -363,10 +363,10 @@ HIST ;;  tree=ntp0 : var=xtht*57.3 : hist=0,90 : title=rec. \theta;\theta [deg]
 ## List Veto Selection
 [Back to TOC](#table-of-contents)
 
-As described in the section [Configuration Setup - REC - Selection](ConfigurationSetup.md#selection) it is possible to apply so-called list veto selection. This means, that particles appearing as in a certain list are rejected from another list. A classical example is a `pi0` veto for the reconstruction of the decay `eta -> gamma gamma`. The following file shows an example.
+As described in the section [Configuration Setup - REC - Selection](ConfigurationSetup.md#selection) it is possible to apply so-called list veto selection. This means, that particles appearing as in a certain list are rejected from another list. A classical example is a pi0 veto for the reconstruction of the decay eta -> gamma gamma. The following file shows an example.
 ```
 01: # ===== Overall options ===== 
-02: OPT  ;;  nmc=1 : rndseed=123 : verbose=1 : hconf=350,3 : legtxt=0.05
+02: OPT  ;;  nmc=1 : rndseed=123 : verbose=1 : hconf=350,4 : legtxt=0.05 
 03: 
 04: # ===== Generators ===== 
 05: GEN  ;;  phsp : ecm=4.6, 0.00965 : reaction=anti-p-,p+ : fixtarget 
@@ -377,36 +377,39 @@ As described in the section [Configuration Setup - REC - Selection](Configuratio
 10: INC  ;;  cfg/det_panda.cfg
 11: 
 12: # ===== Trees/Reco ===== 
-13: REC  ;;  dec= pi0 -> gamma gamma                    : store(pi0,ntp0) = evt,cand 
+13: REC  ;;  dec= pi0 -> gamma gamma :                  : store(pi0,ntp0) = evt,cand 
 14: REC  ;;  dec= pi0 -> gamma gamma : m(pi0)=0.11,0.16 : store(pi0,ntp1) = evt,cand 
 15: REC  ;;  dec= eta -> gamma gamma :                  : store(eta,ntp2) = evt,cand
 16: REC  ;;  dec= eta -> gamma gamma : veto(eta)=pi0    : store(eta,ntp3) = evt,cand
-17: 
-18: # ===== Histograms ===== 
-19: HIST ;;  tree=ntp0 : hist=0.05,0.25 : leg=raw : divx=505 : ...
-20:          title=\pi^{0} candidates;m(\gamma\gamma) [GeV/c^{2}]
-21: HIST ;;  tree=ntp1 : hist=0.05,0.25 : leg=veto : opt=same
-22: 
-23: HIST ;;  tree=ntp2 : leg=raw    : hist=0.05,0.80 : divx=505 : legpos=tr : nostat : ...
-24:          title=full \gamma\gamma mass;m(\gamma\gamma) [GeV/c^{2}]
-25: HIST ;;  tree=ntp1 : leg=veto   : hist=0.05,0.80  : opt=same
-26: HIST ;;  tree=ntp3 : leg=select : hist=0.05,0.80  : opt=same
-27: 
-28: HIST ;;  tree=ntp2 : leg=raw    : hist=0.3,0.80 : divx=505 : legpos=tr : nostat : ...
-29:          title=\eta candidates;m(\gamma\gamma) [GeV/c^{2}]
-30: HIST ;;  tree=ntp3 : leg=select : hist=0.3,0.80  : opt=same : color=4
+17: REC  ;;  dec= eta -> gamma gamma : !veto(eta)=pi0   : store(eta,ntp4) = evt,cand
+18: 
+19: # ===== Histograms ===== 
+20: HIST ;;  tree=ntp2 : leg=raw    : hist=0.0,0.8 : divx=505 : legpos=tr : nostat : ...
+21:          title=full \gamma\gamma mass;m(\gamma\gamma) [GeV/c^{2}]
+22: HIST ;;  tree=ntp1 : leg=veto   : hist=0.0,0.8  : opt=same
+23: HIST ;;  tree=ntp3 : leg=select : hist=0.0,0.8  : opt=same
+24: 
+25: HIST ;;  tree=ntp0 : hist=0.0,0.25 : leg=raw : divx=505 : ...
+26:          title=\pi^{0} candidates;m(\gamma\gamma) [GeV/c^{2}]
+27: HIST ;;  tree=ntp1 : hist=0.0,0.25 : leg=veto : opt=same
+28: 
+29: HIST ;;  tree=ntp2 : leg=raw    : hist=0.3,0.8 : divx=505 : legpos=tr : nostat : ...
+30:          title=\eta candidates;m(\gamma\gamma) [GeV/c^{2}]
+31: HIST ;;  tree=ntp3 : leg=select : hist=0.3,0.8  : opt=same : color=4
+32: HIST ;;  tree=ntp4 : leg=reject : hist=0.3,0.8  : opt=same : color=2
 ```
 _Explanation:_
 * (02) : Overall options
 * (05-07) : Setting up generator with **signal eta -> gamma gamma** and **generic background**
 * (10) : Use PANDA detector setup for reconstruction
-* (13) : Reconstruct **pi0 -> gamma gamma w/o mass cut** for plotting
+* (13) : Reconstruct **pi0 -> gamma gamma raw** spectrum
 * (14) : Reconstruct **pi0 -> gamma gamma with mass cut** for applying **veto**
-* (15) : Reconstruct **eta -> gamma gamma w/o veto selection** for comparison
+* (15) : Reconstruct **eta -> gamma gamma raw** spectrum for comparison
 * (16) : Reconstruct **eta -> gamma gamma with veto selection** 
-* (19-21) : Histogram of 2 gamma mass in **pi0 mass region** showing full spectrum and veto cut
-* (23-26) : Histogram of 2 gamma mass in **full mass region** showing raw spectrum, veto cut and selected candidates
-* (28-30) : Histogram of 2 gamma mass in **eta mass region** with **background suppression by pi0 veto**
+* (17) : Reconstruct **eta -> gamma gamma with anti-veto selection** 
+* (20-23) : Histogram of 2-gamma mass in **full mass region** showing raw spectrum, veto cut and selected candidates
+* (25-27) : Histogram of 2-gamma mass in **pi0 mass region** showing full spectrum and veto cut
+* (29-32) : Histogram of 2-gamma mass in **eta mass region** with **background suppression by pi0 veto**
   
 ![(Veto demo plot)](demo_veto.png)
 
