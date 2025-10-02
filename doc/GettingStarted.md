@@ -246,6 +246,7 @@ USAGE: HepFastSim(int nev, TString cfg, TString opt="")
    - ana       = name of analysis configuration file; overrides cfg for analysis config
    - gen       = name of generator configuration file; overrides cfg for generator config
    - rndseed   = globale random seed (default: 0)
+   - print     = event print frequency (default: 1000)
    - nmc       = generate ntuple with generated MC candidates (default: 0)
    - pidmode   = PID mode (default: 'chi2'; anything else switches to LH mode)
    - mcphot    = number of low energetic additional photons allowed for MC truth match (default: 5)
@@ -253,25 +254,26 @@ USAGE: HepFastSim(int nev, TString cfg, TString opt="")
    - bzfield   = Bz-field in [T]: 0.0 = do not run poca finder (default: 0)
    - prop2ip   = propagate secondaries close to IP (default: 0)
    - hconf     = padwidth,col of histogram canvas (default: 400,4)
-   - hopt      = 2D histogram draw option preset
+   - hopt      = global histogram draw option preset (default: none)
    - legtxt    = text size of legend preset (default: 0.04)
    - legwid    = width of legend preset (default: 0.25)
    - legmarg   = margin of legend preset (default: 0.3)
-   - noleg     = do not draw legend on histograms
-   - nostat    = do not draw statistics box on histograms
    - file      = output file name (default: ana_<config-filename>_<tag>.root)
    - mode      = arbitrary mode number stored in the n-tuples (default: 0)
    - tag       = arbitrary tag for file name
    - storeopt  = options what information for composite/event shape to store to the output tree (default: 'all')
                  (available: cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape; veto with !...)
-   - xp        = flag whether to allow 4-vector expansion in store:precut (default: 0) 
-   - savehist  = flag whether to save histos to file (default: 0)
-   - savetree  = list of tree names to save to file (default: 1=all, 0=none)
-   - savenmc   = flag whether to save MC tree to file (default: nmc)
+   - xvars     = list of additional 4-vector variables
+   - savetree  = list of tree names to save: 0=none, 1=all, <list>=list of TTree names (default: 1)
    - savefig   = name to save canvas (default: '' = do not save)
-   - nosave    = do not save anything (overrides all save settings above!)
-   - print     = event print frequency (default: 1000)
-   - info      = print current parameter setting (default: 0)
+   - noleg     = flag: do not draw legend on histograms
+   - nostat    = flag: do not draw statistics box on histograms
+   - xp        = flag: allow 4-vector expansion in store:precut (default: 0)
+   - savehist  = flag: save histos to file (default: 0)
+   - savenmc   = flag: save MC tree to file (default: setting of 'nmc')
+   - nosave    = flag: do not save anything (hard override of all save settings)
+   - transmem  = flag: keep TTree transient until end (default: 0)
+   - info      = flag: show parameter settings and variables in cfg-file (default: 0)
    - errlvl    = suppress ROOT warning/error output below errlvl*1000 (default: 0)
    - verbose   = verbosity level; (default: 0)
 

@@ -96,6 +96,7 @@ This table shows all parameters that are available. They can appear either in th
 | `legtxt`    | default legend text size                                                       | `0.04`                  |
 | `legwid`    | default legend width                                                           | `0.25`                  |
 | `legmarg`   | default legend margin                                                          | `0.3`                   |
+| `transmem`  | _flag:_ keep TTree completely transient until end                              | `false`                 |
 | `noleg`     | _flag:_ globally suppress legends                                              | `false`                 |
 | `nostat`    | _flag:_ globally suppress statistics box                                       | `false`                 |
 | `nmc`       | _flag:_ generate MC truth TTree                                                | `false`                 |
@@ -889,10 +890,12 @@ root [3] XP("m(p1+p2)",0,".E(),.Px(),.Py(),.Pz(),.P()")
 (TStr) "sqrt((p1.E()+p2.E())^2-(p1.Px()+p2.Px())^2-(p1.Py()+p2.Py())^2-(p1.Pz()+p2.Pz())^2)"[83]
 ```
 
-If enabled for a histogram with `xp`, the 4-vector expansion can also be used in `cut` (e.g. `HIST ;; cut = m([0]+[1])>0.5 : ..`). In order to use combined variables in `precut` (e.g. `REC ;; store(...) = precut(m(xd0+xd1)>1.35)`), the parameter `xvars` must be used as described in section [REC - Extra Variables](#extra-variables) above.
+If enabled for a histogram with `xp`, the 4-vector expansion can also be used in `cut` (e.g. `HIST ;; cut = m([0]+[1])>0.5 : ..`). In order to use combined variables in `precut` (e.g. `REC ;; store(...) = precut(m(xd0+xd1)>1.35)`), the global option parameter `xp` must be set.
 
 
 ## Using Variables
+[Back to TOC](#table-of-contents)
+
 Beside setting the available parameters for `OPT`, it is possible to use parameters with arbitrary names starting with `$` as variables, which later can be used in the rest of the configuration file and are globally replaced. This feature is very useful if (part of) the simulation setup should be controlled dynamically by command line parameters. All variables must be set either in an `OPT` statement or within the additional option string being the third parameter of the steering macro `HepFastSim.C` (see [Running the Simulation](#running-the-simulation)). 
 
 E.g. the configuration setup
