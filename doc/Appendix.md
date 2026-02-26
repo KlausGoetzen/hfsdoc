@@ -28,6 +28,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 * [Demos](Demos.md)
 * [Appendix](Appendix.md)
    + [TTree Branch Names](#ttree-branch-names)
+   + [Data Format evtreader](#data-format-evtreader)
    + [HepParMap](#hepparmap)
 * [References](References.md)
 
@@ -36,7 +37,11 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 ## TTree Branch Names
 [Back to TOC](#table-of-contents)
 
-The command `store` in configuration lines with `REC` statement leads to an automatic creation of a `TTree` with many branches, depending on the local storage switches (`evt`, `cand`, `fit4c`, `shape`) and the global storage setting `storeopt` with the switches (`cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape`). The chosen branch names are quiet compact in order to efficiently work with the resultant trees interactively, the complete list of name prefixes is listed below. Since in general a complete decay tree of a composite particle is stored recursively, the structure of the branch-names is
+The command `store` in configuration lines with `REC` statement leads to an automatic creation of a `TTree` with many branches, depending on the local
+storage switches (`evt`, `cand`, `fit4c`, `shape`) and the global storage setting `storeopt` with the switches (`cms, 2body, dalitz, pid, micro,
+truth, pos, fit, mult, max, sum, shape`). The chosen branch names are quiet compact in order to efficiently work with the resultant trees
+interactively, the complete list of name prefixes is listed below. Since in general a complete decay tree of a composite particle is stored
+recursively, the structure of the branch-names is
 
 ```
 x<postfix>          : mother particle, i.e. root of the decay tree 
@@ -93,7 +98,7 @@ where `<postfix>` encodes the information, e.g. the momentum `px` or muon pid `p
 | ldv                            | displacment in units vertex resolution  | cand + vtx            |
 | vqa                            | sum distances of tracks to vertex       | cand + vtx            |
 | pide, pidmu, pidpi, pidk, pidp | PID probabilities (e, mu, pi, K, p)     | cand + pid            |
-| \<PID detector names>          | raw PID detector responses (micro info) | cand + micro          |
+| \<PID detector names\>         | raw PID detector responses (micro info) | cand + micro          |
 | t..m                           | true mass of particle                   | cand + truth          |
 | t..px, t..py, t..pz, t..e      | true 4-vector components                | cand + truth          |
 | t..p, t..pt                    | true (transverse) momentum              | cand + truth          |
@@ -146,42 +151,83 @@ where `<postfix>` encodes the information, e.g. the momentum `px` or muon pid `p
 | esfw4              | fox wolfram moment H4               | shape + shape         |
 | esfw5              | fox wolfram moment H5               | shape + shape         |
 
+## Data Format evtreader
+The `evtreader` reads input files, that are orignially formatted like the output of the binary `simpleEvtGenRO` provided with the `PandaRoot` software
+framework. For each event the complete decay tree is stored beginning with the initial Lorentz-vector representing the full beam-target system. The
+particles are stored component-wise as array-branches of `int` or `double`.
+
+| Name   | Data type      | Meaning                |
+|--------|----------------|------------------------|
+|`ev`    | `ev/I`         | event number           |
+|`nTrk`  | `nTrk/I`       | number tracks in event |
+|`N`     | `N[nTrk]/I`    | track number           |
+|`Id`    | `Id[nTrk]/I`   | pdg code               |
+|`M1`    | `M1[nTrk]/I`   | mother 1 index         |
+|`M2`    | `M2[nTrk]/I`   | mother 2 index         |
+|`DF`    | `DF[nTrk]/I`   | first daughter index   |
+|`DL`    | `DL[nTrk]/I`   | last daughter index    |
+|`nDau`  | `nDau[nTrk]/I` | number of daughters    |
+|`px`    | `px[nTrk]/D`   | momentum px            |
+|`py`    | `py[nTrk]/D`   | momentum py            |
+|`pz`    | `pz[nTrk]/D`   | momentum pz            |
+|`E`     | `E[nTrk]/D`    | energy E               |
+|`t`     | `t[nTrk]/D`    | creation time t        |
+|`x`     | `x[nTrk]/D`    | origin x               |
+|`y`     | `y[nTrk]/D`    | origin y               |
+|`z`     | `z[nTrk]/D`    | origin z               |
+|`m`     | `m[nTrk]/D`    | mass                   |
+|`p`     | `p[nTrk]/D`    | momentum               |
+|`pt`    | `pt[nTrk]/D`   | transverse momentum    |
+|`tht`   | `tht[nTrk]/D`  | theta [rad]            |
+
+This looks for example like this for the reaction `pbar p --> Lambda anti-Lambda --> p pi- pbar pi+`:
+| Event | Part | Id/PDG |  M1 |  M2 |  DF |  DL | Explanation |
+|-------|------|--------|-----|-----|-----|-----|-------------|
+|   0   |   0  |  88888 |  -1 |  -1 |   1 |   2 | ppbar -> anti-Lambda (1) Lambda (2)      |
+|   0   |   1  |  -3122 |   0 |   0 |   3 |   4 | anti-Lambda from (0) -> pbar (3) pi+ (4) |
+|   0   |   2  |   3122 |   0 |   0 |   5 |   6 | Lambda from (0) -> p (5) pi- (6)         |
+|   0   |   3  |  -2212 |   1 |   1 |  -1 |  -1 | pbar from (1) w/o decay                  |
+|   0   |   4  |    211 |   1 |   1 |  -1 |  -1 | pi+ from (1) w/o decay                   |
+|   0   |   5  |   2212 |   2 |   2 |  -1 |  -1 | p from (2) w/o decay                     |
+|   0   |   6  |   -211 |   2 |   2 |  -1 |  -1 | pi- from (2) w/o decay                   |
+|   1   |   0  |  88888 |  -1 |  -1 |   1 |   2 | ppbar -> anti-Lambda (1) Lambda (2)      |
+|  ..   |   .. |     .. |  .. |  .. |  .. |  .. | ..                                       | 
+
+
 ## HepParMap
 [Back to TOC](#table-of-contents)
 
-The string-based parameter manager `HepParMap` (class located in `src/HepFastAux.C`) is a quite versatile and handy tool to easily handle ROOT macros or functions with many parameters. Instead of letting function headers get longer and longer for more steering options, all parameters are parsed from one single `TString` input parameter. From the users point of view the call of the function then looks like
+The string-based parameter manager `HepParMap` (class located in `src/HepFastAux.C`) is a quite versatile and handy tool to easily handle ROOT macros
+or functions with many parameters. Instead of letting function headers get longer and longer for more steering options, all parameters are parsed from
+one single `TString` input parameter. From the users point of view the call of the function then looks like
 
 ```
 MyFunction(parameter_string)
-
 ```
 
 rather than
 
 ```c++
 MyFunction(par1, par2, par3, par4, ..., par_17, ...)
-
 ```
 
-This has the particular advantage, that one just needs to explicitly specify parameters deviating from default, instead of specify _all_ parameters until reaching the one of interest, and it is obvious what parameter is set since it is referred to by name. If we as an example consider a function 
+This has the particular advantage, that one just needs to explicitly specify parameters deviating from default, instead of specify _all_ parameters
+until reaching the one of interest, and it is obvious what parameter is set since it is referred to by name. If we as an example consider a function 
 
 ```c++
 DrawBW(double mass=1.5, double width=0.05, double range_min=1.0, double range_max=2.0, double spin=1)
-
 ```
 
 to draw a relativistic Breit-Wigner, then usually we need to call it
 
 ```c++
 DrawBW(1.5, 0.05, 1.0, 2.0, 0)
-
 ```
 
 to try it with `spin=0`. In addition you need to know all the defaults for the other parameters, and that `spin` is the fifth one. Using `HepParMap` with the defaults set internally properly, the call just looks like
 
 ```c++
 DrawBW("spin=0")
-
 ```
 
 Another advantage of this way of parameter handling is, that you can add new parameters inside the code without the need to change the interface of the function `DrawBW`. 
@@ -203,12 +249,19 @@ The important part of the interface of the class looks like
   vector<TString> GetParList();
   bool            Exists(<parname>);
   vector<TString> CheckRecall(<verbose>=false, <txt>="Unknown parameters: ");  
-
 ```
 
-In the constructor and the method `SetMap`, `<opt>` is the single string parameter, `<print>` the verbose flag, `<delim>` the delimiter between parameter settings, `<assign>` the assignment symbole, and `<strip>` the setting if and how to strip white-space when parsing (3 = strip on both sides). In the accessor methods, `<parname>` is the name of the parameter, `<default>` the corresponding default value, and `<fill>` the flag to fill the current vector of parameters from the default vector, if less values are given, and `<delim>` the delimiter between list values. Internally all parameter values (also lists) are represented as one single string value, and the accessor methods `GetDbl`, ... , `GetVStr` parse this string to bring it to the requested format. The method `GetParList` returns a vector with all parameter names, `Exists` checks whether a parameter was explicitly set, and `CheckRecall` allows to check, whether there were parameters specified not being requested by the macro code. This is helpful to identify typos in parameter names.
+In the constructor and the method `SetMap`, `<opt>` is the single string parameter, `<print>` the verbose flag, `<delim>` the delimiter between
+parameter settings, `<assign>` the assignment symbole, and `<strip>` the setting if and how to strip white-space when parsing (3 = strip on both
+sides). In the accessor methods, `<parname>` is the name of the parameter, `<default>` the corresponding default value, and `<fill>` the flag to fill
+the current vector of parameters from the default vector, if less values are given, and `<delim>` the delimiter between list values. Internally all
+parameter values (also lists) are represented as one single string value, and the accessor methods `GetDbl`, ... , `GetVStr` parse this string to
+bring it to the requested format. The method `GetParList` returns a vector with all parameter names, `Exists` checks whether a parameter was
+explicitly set, and `CheckRecall` allows to check, whether there were parameters specified not being requested by the macro code. This is helpful to
+identify typos in parameter names.
 
-In case of multiple appearances of parameter names in `<opt>` the latest setting overrides the former ones, so that e.g.  `<opt>="mass=1.5:width=0.05:mass=2.0"` results in the assignment `mass=2.0`.
+In case of multiple appearances of parameter names in `<opt>` the latest setting overrides the former ones, so that e.g.  `<opt>="mass=1.5:width=0.05:mass=2.0"`
+results in the assignment `mass=2.0`.
 
 ### Example Usage
 
@@ -227,22 +280,21 @@ void DrawBW(TString opt)
   pm.CheckRecall(true);
   ...
 }
-
 ```
 
 and a call setting these parameters explicitly like
 
 ```c++
 DrawBW("mass=1.5 : width=0.05 : range=1,2 : spin=0")
-
 ```
 
-where the white-space is just here added for readibility but can also be left away. By setting the flag `<fill>` for the parameter `range`, we make sure that this vector has at least two elements. The call of `CheckRecall` reports about all unknown parameters, i.e. a call `DrawBW("masss=1.7:spin=0")` results in the output
+where the white-space is just here added for readibility but can also be left away. By setting the flag `<fill>` for the parameter `range`, we make
+sure that this vector has at least two elements. The call of `CheckRecall` reports about all unknown parameters, i.e. a call `DrawBW("masss=1.7:spin=0")`
+results in the output
 
 ```c++
 root [1]  DrawBW("masss=1.7:spin=0")
 Unknown parameters: masss  
-
 ```
 
 and identifies the typo in the intended parameter name `mass`, being very helpful for debugging when operating with many parameter names.

@@ -187,7 +187,7 @@ The usage of `evtreader` is very straigh-forward, since there are basically no t
 GEN ;; evtreader : c=1 : f=0.2 : file=ppbar_jpsi2pi.root : tree=ntp
 ```
 
-If the tree has the default name `ntp`, this default setting can be ommitted.
+If the tree has the default name `ntp`, this default setting can be ommitted. The expected data format of the input files is specified in the [appendix](Appendix.md#data-format-evtreader).
 
 ### TParticle Reader (partreader)
 [Back to TOC](#table-of-contents)
@@ -644,20 +644,22 @@ Here, the `phi -> K+ K-` is reconstructed with PID selection either on the `K+` 
 ### Storage
 The `store` statement configures what part of the information is stored to the `TTree` in the output file. It has to parameters, the particle (or list) name `<particle>`, and a tree name `<tree>`. The assigned value is a list of storage options. The relationship of these 'local' storage options and the stored branches is documented in **Appendix / TTree Branch Names**. Although perhaps unexpectedly, **kinematic and mass costraint fitting** is enabled via the `store` statement as well. This allows to choose fitting for each analysis TTree individually.
 
-| `<option>`        | Meaning                                                      |
-| ----------------- | ------------------------------------------------------------ |
-| `evt`             | event related info                                           |
-| `cand`            | candidate related info                                       |
-| `shape`           | event shape variables                                        |
-| `fit4c`           | results of 4C fit                                            |
-| `fitmass(<list>`) | mass constraint for particle names in ';' separated `<list>` |
-| `precut(<cut>)`   | `<cut>` to be applied to TTree before storage                | 
+| `<option>`              | Meaning                                                         |
+| ----------------------- | --------------------------------------------------------------- |
+| `evt`                   | event related info                                              |
+| `cand`                  | candidate related info                                          |
+| `shape`                 | event shape variables                                           |
+| `fit4c`                 | results of 4C fit                                               |
+| `fitmass(<list>`)       | mass constraint for particle names in ';' separated `<list>`    |
+| `fitmissm(<mass/name>`) | missing mass constraint with mass `<mass>` or particle `<name>` |
+| `precut(<cut>)`         | `<cut>` to be applied to TTree before storage                   |
 
-The possibilty to apply a pre-cut to the `TTree` on the fly adds another way of applying a selection to the list of candidates, but in a destructive way. It also offers a good opportunity to save disc space (and I/O load) to remove candidates which are not interest anyways.
+The possibilty to apply a pre-cut to the `TTree` on the fly adds another way of applying a selection to the list of candidates, but in a destructive way. It also offers a good opportunity to save disc space (and I/O load) to remove candidates which are not interest anyways. Concerning the fitting, the option `fit4c` and `fitmissm` are exclusive, since one either reconstructs the full exclusive system (`fit4c`), or the final state excluding a certain missing particle (`fitmissm`).
 
 _Example:_
 ```
-REC ; dec = pi0 -> gamma gamma; J/psi -> mu+ mu-; chi_c0 -> J/psi gamma; pbarpSystem -> chi_c0 pi0 : store(pbarpSystem) = evt,cand,fit4c,fitmass(pi0;J/psi),precut(abs(xd0d0m-3.097)<0.3)
+REC ;; dec = pi0 -> gamma gamma; J/psi -> mu+ mu-; chi_c0 -> J/psi gamma; beams -> chi_c0 pi0 : store(beams) = evt, cand, fit4c, fitmass(pi0;J/psi), precut(abs(xd0d0m-3.097)<0.3)
+REC ;; dec = J/psi -> mu+ mu-; Z3900- -> J/psi pi-; beams -> Z3900- p+ : pidp(p+)=0.001 : store(beams,ntp3) = evt,cand,fitmass(J/psi),fitmissm(n0)
 ```
 
 ### Extra Variables
