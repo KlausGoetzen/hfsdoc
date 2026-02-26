@@ -181,8 +181,9 @@ particles are stored component-wise as array-branches of `int` or `double`.
 |`tht`   | `tht[nTrk]/D`  | theta [rad]            |
 
 This looks for example like this for the reaction `pbar p --> Lambda anti-Lambda --> p pi- pbar pi+`:
-| Event | Part | Id/PDG |  M1 |  M2 |  DF |  DL | Explanation |
-|-------|------|--------|-----|-----|-----|-----|-------------|
+
+| Event | Part | Id/PDG |  M1 |  M2 |  DF |  DL | Explanation                              |
+|-------|------|--------|-----|-----|-----|-----|------------------------------------------|
 |   0   |   0  |  88888 |  -1 |  -1 |   1 |   2 | ppbar -> anti-Lambda (1) Lambda (2)      |
 |   0   |   1  |  -3122 |   0 |   0 |   3 |   4 | anti-Lambda from (0) -> pbar (3) pi+ (4) |
 |   0   |   2  |   3122 |   0 |   0 |   5 |   6 | Lambda from (0) -> p (5) pi- (6)         |

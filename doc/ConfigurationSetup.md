@@ -187,7 +187,7 @@ The usage of `evtreader` is very straigh-forward, since there are basically no t
 GEN ;; evtreader : c=1 : f=0.2 : file=ppbar_jpsi2pi.root : tree=ntp
 ```
 
-If the tree has the default name `ntp`, this default setting can be ommitted. The expected data format of the input files is specified in the [appendix](Appendix.md#data-format-evtreader).
+If the tree has the default name `ntp`, this default setting can be ommitted. The data format of the input files is specified in the [appendix](Appendix.md#data-format-evtreader).
 
 ### TParticle Reader (partreader)
 [Back to TOC](#table-of-contents)
