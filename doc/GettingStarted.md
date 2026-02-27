@@ -89,59 +89,93 @@ Multiple parameter settings can be done by concatenation of individual expressio
 ## Particle Naming Scheme
 [Back to TOC](#table-of-contents)
 
-In the above examples, we already see a couple of particle names used for generation, selection, reconstruction or storage. The names to be used correspond to those used by EvtGen. The file `HepFastParticleTable.txt` defines the names. The particle codes in the database in general follow the code rules by the Particle Data Group (PDG). 
+In the above examples, we already see a couple of particle names used for generation, selection, reconstruction or storage. The names to be used correspond to those used by `EvtGen`. The file `HepFastParticleTable.txt` defines the names. The particle codes in the database in general follow the code rules by the Particle Data Group (PDG). 
 
 ### Searching the Database
 In order to look up particle names to be used, a tool to search the database is provided. If the simulation macro has been loaded to the prompt with `root -l HepFastSim.C+` or `hfs`, or just the auxilliary tools have been loaded with `root -l src/HepFastAux.C`, the function **`SearchDB(<patt>, [opt])`** can be used to search for particles in the database.
 
-The parameter `<patt>` is a regular expression with the search pattern for the name, in `<opt>` an additional mass region can be selected, and some switches (`short`: compact output, `long`: print with decays) steering the output can be set. In the following some examples:
+The parameter `<patt>` is either a regular expression with the search pattern for the name or a single PDG code, in `<opt>` an additional mass region can be selected, and some switches (`short`: compact output, `long`: print with decays) steering the output can be set. Calling without parameters prints some usage information. In the following some examples:
 ```
 root -l src/HepFastAux.C
 
-root [0] SearchDB("Del")  //  Match names containing 'Del'  
-Matching particles for name like 'Del' and 0 < mass < 1000 GeV:
-Delta+       : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = +1.0
-Delta++      : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = +2.0
-Delta-       : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = -1.0
-Delta0       : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = +0.0
-anti-Delta+  : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = +1.0
-anti-Delta-  : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = -1.0
-anti-Delta-- : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = -2.0
-anti-Delta0  : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = -0.0
+root [0] SearchDB()
+USAGE: SearchDB(<pat>, <opt>)
+  <pat> : either search pattern (regexp possible, e.g. '^Del.+$') or single pdg code
+  <opt> : options string ':' separated
+          'short'  : print compact list
+          'long'   : print with decays
+          'filter' : filter decays in long mode
+          'plain'  : search string unaltered (else e.g. '+' is replaced by '[+]+' for reg exp)
+          'pdg'    : list of PDG codes to search/list
+
+root [1] SearchDB("*", "mass=3.8,3.9")  //  lists particles with masses between 3.8 and 3.9 GeV
+Matching particles for name like '' in mass range 3.8 < mass < 3.9 GeV:
+Omega_cc*+      (     4434) : mass =   3.8247 GeV : width =    0.000 MeV : tau = 0.000e+00 s : q = +1.0 : n_dec = 6
+X_1(3872)       ( 99020443) : mass =   3.8716 GeV : width =    0.300 MeV : tau = 2.194e-21 s : q = +0.0 : n_dec = 1
+X_2(3872)       ( 99120445) : mass =   3.8716 GeV : width =    0.300 MeV : tau = 2.194e-21 s : q = +0.0 : n_dec = 0
+Z_c(3900)+      ( 99010443) : mass =   3.8872 GeV : width =   28.200 MeV : tau = 2.334e-23 s : q = +1.0 : n_dec = 0
+Z_c(3900)-      (-99010443) : mass =   3.8872 GeV : width =   28.200 MeV : tau = 2.334e-23 s : q = -1.0 : n_dec = 0
+Z_c(3900)0      ( 98010443) : mass =   3.8872 GeV : width =   28.200 MeV : tau = 2.334e-23 s : q = +0.0 : n_dec = 0
+anti-Omega_cc*- (    -4434) : mass =   3.8247 GeV : width =    0.000 MeV : tau = 0.000e+00 s : q = -1.0 : n_dec = 6
+psi_2(3823)     ( 99020445) : mass =   3.8222 GeV : width =   10.000 MeV : tau = 6.582e-23 s : q = +0.0 : n_dec = 0
 
 Matched 8/719 particles.
 
-root [1] SearchDB("^Del.++$")  //  Match names beginning with 'Del' and ending with '+'
-Matching particles for name like '^Del.+[+]$' and 0 < mass < 1000 GeV:
-Delta+  : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = +1.0
-Delta++ : m =   1.2320 GeV : Gamma =  117.000 MeV : tau = 5.626e-24 s : q = +2.0
+root [2] SearchDB("Del")  //  Match names containing 'Del'  
+Matching particles for name like 'Del' in mass range 0 < mass < 10000 GeV:
+Delta+       (     2214) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = +1.0 : n_dec = 3
+Delta++      (     2224) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = +2.0 : n_dec = 1
+Delta-       (     1114) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = -1.0 : n_dec = 1
+Delta0       (     2114) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = +0.0 : n_dec = 3
+anti-Delta+  (    -1114) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = +1.0 : n_dec = 1
+anti-Delta-  (    -2214) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = -1.0 : n_dec = 3
+anti-Delta-- (    -2224) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = -2.0 : n_dec = 1
+anti-Delta0  (    -2114) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = -0.0 : n_dec = 3
+
+Matched 8/719 particles.
+
+root [3] SearchDB("^Del.++$")  //  Match names beginning with 'Del' and ending with '+'
+Matching particles for name like '^Del.+[+]+$' in mass range 0 < mass < 10000 GeV:
+Delta+  (     2214) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = +1.0 : n_dec = 3
+Delta++ (     2224) : mass =   1.2320 GeV : width =  117.000 MeV : tau = 5.626e-24 s : q = +2.0 : n_dec = 1
 
 Matched 2/719 particles.
 
-root [2] SearchDB("pi","mass=1,1.5 : short")  //  Match names containing 'pi' and mass range [1.0,1.5], short print format
-Matching particles for name like 'pi' and 1 < mass < 1.5 GeV: pi(2S)+, pi(2S)-, pi(2S)0, pi_1(1400)+, pi_1(1400)-, pi_1(1400)0
+root [4] SearchDB("pi","mass=1,1.5 : short")  //  Match names containing 'pi' and mass range [1.0,1.5], short print format
+Matching particles for name like 'pi' in mass range 1 < mass < 1.5 GeV: pi(2S)+, pi(2S)-, pi(2S)0, pi_1(1400)+, pi_1(1400)-, pi_1(1400)0
 
 Matched 6/719 particles.
 
-root [3] SearchDB("^rho(2S)","long")  //  Match names beginning with 'rho(2S)', long print format with decay information
-Matching particles for name like '^rho(2S)' and 0 < mass < 1000 GeV:
-rho(2S)+ : mass =   1.4650 GeV : width =  400.000 MeV : tau = 1.646e-24 s : q = +1.0 : n_dec = 3
+root [5] SearchDB("^rho(2S)","long")  //  Match names beginning with 'rho(2S)', long print format with decay information
+Matching particles for name like '^rho(2S)' in mass range 0 < mass < 10000 GeV:
+rho(2S)+ (   100213) : mass =   1.4650 GeV : width =  400.000 MeV : tau = 1.646e-24 s : q = +1.0 : n_dec = 3
  Channel Code BranchingRatio Nd   ...................Daughters.................... 
-      0     0  4.00000e-01     2      pi+(  211)     pi0(  111)                    
-      1     0  4.00000e-01     4      pi+(  211)     pi+(  211)     pi-( -211)     pi0(  111)
-      2     0  2.00000e-01     4      pi+(  211)     pi0(  111)     pi0(  111)     pi0(  111)
-rho(2S)- : mass =   1.4650 GeV : width =  400.000 MeV : tau = 1.646e-24 s : q = -1.0 : n_dec = 3
+      0     0  4.00000e-01     2               pi+(     211)             pi0(     111)
+      1     0  4.00000e-01     4               pi+(     211)             pi+(     211)             pi-(    -211)             pi0(     111)
+      2     0  2.00000e-01     4               pi+(     211)             pi0(     111)             pi0(     111)             pi0(     111)
+rho(2S)- (  -100213) : mass =   1.4650 GeV : width =  400.000 MeV : tau = 1.646e-24 s : q = -1.0 : n_dec = 3
  Channel Code BranchingRatio Nd   ...................Daughters.................... 
-      0     0  4.00000e-01     2      pi-( -211)     pi0(  111)                    
-      1     0  4.00000e-01     4      pi-( -211)     pi-( -211)     pi+(  211)     pi0(  111)
-      2     0  2.00000e-01     4      pi-( -211)     pi0(  111)     pi0(  111)     pi0(  111)
-rho(2S)0 : mass =   1.4650 GeV : width =  400.000 MeV : tau = 1.646e-24 s : q = +0.0 : n_dec = 4
+      0     0  4.00000e-01     2               pi-(    -211)             pi0(     111)
+      1     0  4.00000e-01     4               pi-(    -211)             pi-(    -211)             pi+(     211)             pi0(     111)
+      2     0  2.00000e-01     4               pi-(    -211)             pi0(     111)             pi0(     111)             pi0(     111)
+rho(2S)0 (   100113) : mass =   1.4650 GeV : width =  400.000 MeV : tau = 1.646e-24 s : q = +0.0 : n_dec = 4
  Channel Code BranchingRatio Nd   ...................Daughters.................... 
-      0     0  4.00000e-01     2      pi+(  211)     pi-( -211)                       
-      1     0  3.50000e-01     4      pi+(  211)     pi-( -211)     pi+(  211)     pi-( -211)
-      2     0  1.50000e-01     4      pi+(  211)     pi-( -211)     pi0(  111)     pi0(  111)
-      3     0  1.00000e-01     4      pi0(  111)     pi0(  111)     pi0(  111)     pi0(  111)
+      0     0  4.00000e-01     2               pi+(     211)             pi-(    -211)
+      1     0  3.50000e-01     4               pi+(     211)             pi-(    -211)             pi+(     211)             pi-(    -211)
+      2     0  1.50000e-01     4               pi+(     211)             pi-(    -211)             pi0(     111)             pi0(     111)
+      3     0  1.00000e-01     4               pi0(     111)             pi0(     111)             pi0(     111)             pi0(     111)
+
 Matched 3/719 particles.
+
+root [6] SearchDB(310, "long : filter=gamma") // lists decays of K_S (PDG code = 310), filtered to contain 'gamma'
+Matching particles for PDG codes 310:
+K_S0 (      310) : mass =   0.4976 GeV : width =    0.000 MeV : tau = 8.954e-11 s : q = +0.0 : n_dec = 9
+ Channel Code BranchingRatio Nd   ...................Daughters.................... 
+      3     0  1.72218e-03     3               pi+(     211)             pi-(    -211)           gamma(      22)
+      5     0  2.50000e-08     3               pi0(     111)           gamma(      22)           gamma(      22)
+      6     0  2.39900e-06     2             gamma(      22)           gamma(      22)
+
+Matched 1/719 particles.
 ```
 
 ### Charged Conjugates

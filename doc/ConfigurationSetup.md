@@ -512,9 +512,7 @@ _Example:_
                       pidres=[p]^2*[dt]*30*sin([tht])/(([p]^2+[m]^2)*[dist]) : ...   # expected resolution from time resolution dt [ns] and distance 
                       dist=50 : dt=0.1 : absres                                      # radius = 50cm, dt = 100 ps   
     ```
-* **Lambda functions**: Sometimes it can be complicated or even impossible to express the function in form of a ROOT `TFormula`. In these cases a 
-lambda function can be used instead of a formula. To do so, the expression following the `pidexp`, `pidres`, and `pidthr` keywords must be 
-given as **`lambda{ ... }`** (no space between `lambda` and `{`). This also prevents the parameter parser to split the line on the appearance of `:` between `{` and `}`. The variables can be used in exactly the same way by putting them in brackets (`[p]`, `[tht]`, `[dt]`, etc). Keep in mind ***to use the dot operator*** (`...`) when splitting the code to multiple lines. The following configuration snippet illustrates how.\
+* **Lambda functions**: Sometimes it can be complicated or even impossible to express the function in form of a ROOT `TFormula`. In these cases a lambda function can be used instead of a formula. To do so, the expression following the `pidexp`, `pidres`, and `pidthr` keywords must be given as **`lambda{ ... }`** (no space between `lambda` and `{`). This also prevents the parameter parser to split the line on the appearance of `:` between `{` and `}`. The variables can be used in exactly the same way by putting them in brackets (`[p]`, `[tht]`, `[dt]`, etc). Keep in mind ***to use the dot operator*** (`...`) when splitting the code to multiple lines. The following configuration snippet illustrates how.\
 \
 _Example:_
     ```

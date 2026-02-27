@@ -33,6 +33,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
    + [Background Study](#background-study)
    + [Using Variables](#using-variables)
    + [List Veto Selection](#list-veto-selection)
+   + [Missing Mass Fit](#missing-mass-fit)
 * [Appendix](Appendix.md)
 * [References](References.md)
 
@@ -292,7 +293,7 @@ One can actually visualize the corresponding `K_S0` peak by plotting `ntp1->Draw
 ## Using Variables
 [Back to TOC](#table-of-contents)
 
-As already being addressed in [Configuration Setup - Using Variables](ConfigurationSetup.md#using-variables) it is possible to use variables per command line, which adds much more flexibility for systematic investigations without the need to provide modified configuration files all the time.
+As already being addressed in [Configuration Setup - Using Variables](ConfigurationSetup.md#using-variables) it is possible to use variables per command line, which adds much more flexibility for systematic investigations without the need to provide modified configuration files all the time. Variables are all expressions starting with a `$` character, like e. g. `$ecm` in the example.
 
 As an example let us consider the following config-file to learn the opportunities. It is a slight variation of the above background demo.
 ```
@@ -413,4 +414,55 @@ _Explanation:_
   
 ![(Veto demo plot)](demo_veto.png)
 
+## Missing Mass Fit
+[Back to TOC](#table-of-contents)
+
+Sometimes it is not possible to reconstruct the full final state, and a non-detectable/detected particle is missing. In the example below the reaction `pbar p -> Pc+ anti-n0 pi-` should be reconstructed, where the anti-neutron is not seen in the detector. In order to exploit the knowledge about the particle type missing, and to improve the mass resolution of the particle of interest (the exotic candidate `P_c(4312)+`) a **missing mass constraint** can be applied. The keyword is `fitmissm(<mass>)` in the parameter list of `REC ;; store =...`. 
+
+The following config file demonstrates this approach:
+```
+01: # ===== Overall options ===== 
+02: OPT  ;;  nmc=1 : rndseed=123 : verbose=1 : hconf=350,4
+03: 
+04: # ===== Generators ===== 
+05: ADD  ;;  particle=Pc+ : alias=P_c(4312)+ 
+06: 
+07: GEN  ;;  phsp : ecm=5.5, 0.00965 : reaction=anti-p-,p+ : fixtarget 
+08: GEN  ;;  phsp : f=1  : c=1 : dec=beams -> Pc+ anti-n0 pi- ; Pc+ -> J/psi p+ ; J/psi -> mu+ mu-  # signal
+09: 
+10: # ===== Detectors ===== 
+11: INC  ;;  cfg/det_panda.cfg
+12: 
+13: # ===== Trees/Reco ===== 
+14: REC  ;;  dec = J/psi -> mu+ mu- : m(J/psi)=2.8,3.4 : pidmu(mu)=0.001
+15: REC  ;;  dec = Pc+ -> J/psi p+  : m(J/psi)=3.0,3.2 : pidp(p+)=0.001
+16: REC  ;;  dec = beams -> Pc+ pi- : m(Pc+)=4,4.6 : store(beams,ntp3) = evt,cand,fitmissm(n0)
+17: 
+18: # ===== Histograms ===== 
+19: HIST ;;  tree=ntp3 : hist=4.0,4.6 : var=xd0m : cut=fbest : leg=raw : title=m(J/\psi p);m(J/\psi p) [GeV/c^{2}]
+20: HIST ;;  var=fxd0m : cut=fbest : leg=fit
+21: 
+22: HIST ;;  tree=ntp3 : hist=0.6,1.3: var=xmm : leg=raw : cut=fbest : title=missing mass;m_{miss} [GeV/c^{2}]
+23: HIST ;;  xp : var=m(beam-fx) : leg=fit 
+24: 
+25: HIST ;;  tree=ntp3 : hist=-1.5,1.5 : xp : var=p(tbeam-txd0)-p(beam-xd0) : ...
+26:          leg=raw : cut=fbest : title=\Deltap missing neutron;\Deltap [GeV/c]
+27: HIST ;;  xp : var=p(tbeam-txd0)-p(beam-fxd0) : leg=fit : cut=fbest
+```
+
+_Explanation:_
+* (02) : Overall options
+* (05) : Add **alias Pc+ for the exotic pentaquark** candidate `P_c(4312)+`
+* (07-08) : Setup `phsp` generator with reaction **inluding an anti-neutron** `anti-n0`
+* (11) : Use **PANDA detector** setup for reconstruction
+* (14) : Reconstruct **J/psi -> mu+ mu-** list
+* (15) : Reconstruct **Pc+ -> J/psi p+** list
+* (16) : Reconstruct list with **incomplete beams -> Pc+ pi-** candidates with **missing mass constraint**
+* (19-20) : Histogram of the **Pc+** candidates, raw and fitted 
+* (22-23) : Histogram of **missing mass**, raw and fitted
+* (25-27) : Histogram of **reconstructed momentum of missing neutron**, raw and fitted. The expressions use Lorentz vector expansion (see [here](ConfigurationSetup.html#lorentz-vector-expansion)) enabled by the parameter `xp`
+  
+![(Missing mass fit demo plot)](demo_fitmiss.png)
+
 Proceed to the next section: [Appendix](Appendix.md)
+

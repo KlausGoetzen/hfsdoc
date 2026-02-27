@@ -50,8 +50,7 @@ The general concept of the simulation consists of the following steps:
 4. Live histogramming
    * Any branch inside these TTrees can be used for live histogramming
 
-Concerning parameter settings and configuration, the main philosophy is the need to specify as few as possible, and most
-is anticipated as reasonable default settings.
+Concerning parameter settings and configuration, the main philosophy is the need to specify as few as possible, and most is anticipated as reasonable default settings.
 
 ## Features
 [Back to TOC](#table-of-contents)

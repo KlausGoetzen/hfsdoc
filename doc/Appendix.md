@@ -37,11 +37,7 @@ License: Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
 ## TTree Branch Names
 [Back to TOC](#table-of-contents)
 
-The command `store` in configuration lines with `REC` statement leads to an automatic creation of a `TTree` with many branches, depending on the local
-storage switches (`evt`, `cand`, `fit4c`, `shape`) and the global storage setting `storeopt` with the switches (`cms, 2body, dalitz, pid, micro,
-truth, pos, fit, mult, max, sum, shape`). The chosen branch names are quiet compact in order to efficiently work with the resultant trees
-interactively, the complete list of name prefixes is listed below. Since in general a complete decay tree of a composite particle is stored
-recursively, the structure of the branch-names is
+The command `store` in configuration lines with `REC` statement leads to an automatic creation of a `TTree` with many branches, depending on the local storage switches (`evt`, `cand`, `fit4c`, `shape`) and the global storage setting `storeopt` with the switches (`cms, 2body, dalitz, pid, micro, truth, pos, fit, mult, max, sum, shape`). The chosen branch names are quiet compact in order to efficiently work with the resultant trees interactively, the complete list of name prefixes is listed below. Since in general a complete decay tree of a composite particle is stored recursively, the structure of the branch-names is
 
 ```
 x<postfix>          : mother particle, i.e. root of the decay tree 
@@ -152,9 +148,7 @@ where `<postfix>` encodes the information, e.g. the momentum `px` or muon pid `p
 | esfw5              | fox wolfram moment H5               | shape + shape         |
 
 ## Data Format evtreader
-The `evtreader` reads input files, that are orignially formatted like the output of the binary `simpleEvtGenRO` provided with the `PandaRoot` software
-framework. For each event the complete decay tree is stored beginning with the initial Lorentz-vector representing the full beam-target system. The
-particles are stored component-wise as array-branches of `int` or `double`.
+The `evtreader` reads input files, that are orignially formatted like the output of the binary `simpleEvtGenRO` provided with the `PandaRoot` software framework. For each event the complete decay tree is stored beginning with the initial Lorentz-vector representing the full beam-target system. The particles are stored component-wise as array-branches of `int` or `double`.
 
 | Name   | Data type      | Meaning                |
 |--------|----------------|------------------------|
@@ -198,9 +192,7 @@ This looks for example like this for the reaction `pbar p --> Lambda anti-Lambda
 ## HepParMap
 [Back to TOC](#table-of-contents)
 
-The string-based parameter manager `HepParMap` (class located in `src/HepFastAux.C`) is a quite versatile and handy tool to easily handle ROOT macros
-or functions with many parameters. Instead of letting function headers get longer and longer for more steering options, all parameters are parsed from
-one single `TString` input parameter. From the users point of view the call of the function then looks like
+The string-based parameter manager `HepParMap` (class located in `src/HepFastAux.C`) is a quite versatile and handy tool to easily handle ROOT macros or functions with many parameters. Instead of letting function headers get longer and longer for more steering options, all parameters are parsed from one single `TString` input parameter. From the users point of view the call of the function then looks like
 
 ```
 MyFunction(parameter_string)
@@ -212,8 +204,7 @@ rather than
 MyFunction(par1, par2, par3, par4, ..., par_17, ...)
 ```
 
-This has the particular advantage, that one just needs to explicitly specify parameters deviating from default, instead of specify _all_ parameters
-until reaching the one of interest, and it is obvious what parameter is set since it is referred to by name. If we as an example consider a function 
+This has the particular advantage, that one just needs to explicitly specify parameters deviating from default, instead of specify _all_ parameters until reaching the one of interest, and it is obvious what parameter is set since it is referred to by name. If we as an example consider a function 
 
 ```c++
 DrawBW(double mass=1.5, double width=0.05, double range_min=1.0, double range_max=2.0, double spin=1)
@@ -252,14 +243,7 @@ The important part of the interface of the class looks like
   vector<TString> CheckRecall(<verbose>=false, <txt>="Unknown parameters: ");  
 ```
 
-In the constructor and the method `SetMap`, `<opt>` is the single string parameter, `<print>` the verbose flag, `<delim>` the delimiter between
-parameter settings, `<assign>` the assignment symbole, and `<strip>` the setting if and how to strip white-space when parsing (3 = strip on both
-sides). In the accessor methods, `<parname>` is the name of the parameter, `<default>` the corresponding default value, and `<fill>` the flag to fill
-the current vector of parameters from the default vector, if less values are given, and `<delim>` the delimiter between list values. Internally all
-parameter values (also lists) are represented as one single string value, and the accessor methods `GetDbl`, ... , `GetVStr` parse this string to
-bring it to the requested format. The method `GetParList` returns a vector with all parameter names, `Exists` checks whether a parameter was
-explicitly set, and `CheckRecall` allows to check, whether there were parameters specified not being requested by the macro code. This is helpful to
-identify typos in parameter names.
+In the constructor and the method `SetMap`, `<opt>` is the single string parameter, `<print>` the verbose flag, `<delim>` the delimiter between parameter settings, `<assign>` the assignment symbole, and `<strip>` the setting if and how to strip white-space when parsing (3 = strip on both sides). In the accessor methods, `<parname>` is the name of the parameter, `<default>` the corresponding default value, and `<fill>` the flag to fill the current vector of parameters from the default vector, if less values are given, and `<delim>` the delimiter between list values. Internally all parameter values (also lists) are represented as one single string value, and the accessor methods `GetDbl`, ... , `GetVStr` parse this string to bring it to the requested format. The method `GetParList` returns a vector with all parameter names, `Exists` checks whether a parameter was explicitly set, and `CheckRecall` allows to check, whether there were parameters specified not being requested by the macro code. This is helpful to identify typos in parameter names.
 
 In case of multiple appearances of parameter names in `<opt>` the latest setting overrides the former ones, so that e.g.  `<opt>="mass=1.5:width=0.05:mass=2.0"`
 results in the assignment `mass=2.0`.
@@ -289,9 +273,7 @@ and a call setting these parameters explicitly like
 DrawBW("mass=1.5 : width=0.05 : range=1,2 : spin=0")
 ```
 
-where the white-space is just here added for readibility but can also be left away. By setting the flag `<fill>` for the parameter `range`, we make
-sure that this vector has at least two elements. The call of `CheckRecall` reports about all unknown parameters, i.e. a call `DrawBW("masss=1.7:spin=0")`
-results in the output
+where the white-space is just here added for readibility but can also be left away. By setting the flag `<fill>` for the parameter `range`, we make sure that this vector has at least two elements. The call of `CheckRecall` reports about all unknown parameters, i.e. a call `DrawBW("masss=1.7:spin=0")` results in the output
 
 ```c++
 root [1]  DrawBW("masss=1.7:spin=0")
