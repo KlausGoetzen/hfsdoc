@@ -640,7 +640,14 @@ Here, the `phi -> K+ K-` is reconstructed with PID selection either on the `K+` 
 
 
 ### Storage
-The `store` statement configures what part of the information is stored to the `TTree` in the output file. It has to parameters, the particle (or list) name `<particle>`, and a tree name `<tree>`. The assigned value is a list of storage options. The relationship of these 'local' storage options and the stored branches is documented in **Appendix / TTree Branch Names**. Although perhaps unexpectedly, **kinematic and mass costraint fitting** is enabled via the `store` statement as well. This allows to choose fitting for each analysis TTree individually.
+The `store` statement configures what part of the information is stored to the `TTree` in the output file. It has two parameters, the particle (or list) name `<particle>`, and a user defined tree name `<tree>`. If the latter is omitted, a default tree name of the form `ntp__<number>` is generated. The particle name is the name of the particle as used in the `dec` statement (like e.g. `eta` or `J/psi`) or a pre-defind basic list name of final state particles. Those are:
+* `cand` : all (charged and neutral) candidates
+* `trk` : all charged tracks
+* `trk+` : all positively charged tracks
+* `trk-` : all negatively charged tracks
+* `neut` : all neutral particles
+
+The assigned value `<store options>` is a list of storage options. The relationship of these 'local' storage options and the stored branches is documented in [**Appendix / TTree Branch Names**](Appendix.md#ttree-branch-names). Although perhaps unexpectedly, **kinematic and mass costraint fitting** is enabled via the `store` statement as well. This allows to choose fitting for each analysis TTree individually.
 
 | `<option>`              | Meaning                                                         |
 | ----------------------- | --------------------------------------------------------------- |
